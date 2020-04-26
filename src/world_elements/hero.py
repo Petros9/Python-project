@@ -1,7 +1,6 @@
-from basic.point import Point
 from basic.direction import Direction
-from world_elements.spawn import Spawn
 from physics_object import PhysicsObject
+from world_elements.spawn import Spawn
 
 
 class Hero(PhysicsObject):

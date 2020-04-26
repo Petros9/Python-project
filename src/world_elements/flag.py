@@ -1,8 +1,11 @@
-from src.basic.point import Point
+from basic.point import Point
 from physics_object import PhysicsObject
+
+
 # będą dwa rodzaje flag, cesaskie i
 class Flag(PhysicsObject):
     def __init__(self, x, y):
+        super().__init__(Point(x, y))
         self.position = Point(x, y)
         self.active = False
         self.captured = False

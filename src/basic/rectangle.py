@@ -1,4 +1,4 @@
-from src.basic.point import Point
+from basic.point import Point
 
 
 class Rectangle:

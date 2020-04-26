@@ -1,7 +1,7 @@
 from src.basic.point import Point
 
 
-class Platform:
+class Platform():
     def __init__(self, x, y):
         self.position = Point(x, y)
 

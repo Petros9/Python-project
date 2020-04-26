@@ -1,5 +1,4 @@
-from src.basic.point import Point
-from src.basic.direction import Direction
+from basic.point import Point
 from physics_object import PhysicsObject
 
 BULLET_SPEED = 5

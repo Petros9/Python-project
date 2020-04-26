@@ -96,15 +96,14 @@ class PhysicsObject:
         map_object = self.world.object_at(vec)
 
         if (self.velocity.y and map_object is not None):
-            print(f"FLOOR {self.position } --> {map_object.position}")
+            print(f"FLOOR {self.position} --> {map_object.position}")
             self.position.y = map_object.position.y - UNIT
             self.velocity.y = 0
             self.jumping = False
 
-
         self.position.x = int(self.position.x)
         self.position.y = int(self.position.y)
-            
+
     def update(self):
         """ Method updates physical status of the object.
         It uses moves and acceleration methods to move the object and apply
