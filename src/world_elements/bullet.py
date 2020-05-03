@@ -1,22 +1,15 @@
-from src.basic.point import Point
-from src.basic.direction import Direction
-from physics_object import PhysicsObject
-
-BULLET_SPEED = 5
+import pygame
 
 
-class Bullet(PhysicsObject):
-    # '' pusty docstring
-    """
-    """
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, img, start_position, velocity):
+        super().__init__()
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.x = start_position.x
+        self.rect.y = start_position.y
+        self.velocity = velocity
 
-    def __init__(self, x=1, y=1, speed=3, y_direction=0):
-        super().__init__(Point(x, y))
-        self.speed = speed
-        self.y_direction = y_direction
-
-    def move(self):
-        self.position += Point(self.speed, self.y_direction)
-
-    def position_on_screen(self, hero_position):
-        return self.position.x - hero_position + 30
+    def update(self):
+        self.rect.x += self.velocity.x
+        self.rect.y += self.velocity.y

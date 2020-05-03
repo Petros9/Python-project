@@ -1,9 +1,13 @@
-from src.basic.point import Point
+import basic as bs
 
 
 class Spawn:
-    def __init__(self, x=40, y=20):
-        self.position = Point(x, y)
+    """ Spawn for heroes.
 
-    def change_spawn(self, x, y):
-        self.position = Point(x, y)
+    Attributes:
+        position (Point): Position of spawn relative to the current frame.
+    """
+    def __init__(self, x=1, y=1):
+        # Default is (1, 1), because physics objects like heroes scale the
+        # vectors by themselves to match the grid.
+        self.position = bs.Point(x, y)

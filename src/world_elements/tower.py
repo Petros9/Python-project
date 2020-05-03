@@ -1,8 +1,9 @@
-from src.basic.point import Point
+from settings import *
+from static_object import StaticObject
 
-class Tower:
-    def __init__(self, x, y):
-        self.position = Point(x, y)
 
-    def position_on_screen(self, hero_position):
-        return self.position.x - hero_position + 30
+class Tower(StaticObject):
+    def __init__(self, img, x, y):
+        super().__init__(img, x, y)
+        self.reload_timer = 0
+        self.bullets = TOWER_BULLETS_PER_BURST

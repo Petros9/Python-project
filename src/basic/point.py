@@ -1,14 +1,29 @@
-class Point:
-    """ Point on a 2D plane.
 
+class Point:
+    """ Point on a 2D plane, also a vector.
+
+    Attributes:
+        x:
+        y:
     """
+
+    EPSILON = 1.e-10
 
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
 
+    @classmethod
+    def from_tuple(cls, coordinates: tuple):
+        return Point(coordinates[0], coordinates[1])
+
     def __eq__(self, other):
-        return self.x == other.x and self.y == other.y
+        if (isinstance(self.x, int) and isinstance(self.y, int) and
+                isinstance(other.x, int) and isinstance(other.y, int)):
+            return self.x == other.x and self.y == other.y
+
+        return abs(self.x - other.x) < self.EPSILON and \
+            abs(self.y - other.y) < self.EPSILON
 
     def __add__(self, other):
         return Point(self.x + other.x, self.y + other.y)
