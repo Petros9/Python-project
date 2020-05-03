@@ -1,10 +1,8 @@
-from enum import Enum
+from enum import Enum, auto
 
 
 class Direction(Enum):
-    # '' bardzo prosty docstring here
+    """ Direction enumeration for characters.
     """
-    """
-    LEFT = -1
-    RIGHT = 1
-    # '' Być może up and down.
+    LEFT = auto()
+    RIGHT = auto()
