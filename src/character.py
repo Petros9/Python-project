@@ -55,6 +55,7 @@ class Character(pygame.sprite.Sprite):
         if (abs(self.velocity.y) > SPEED_LIMIT):
             self.velocity.y = SPEED_LIMIT * y_direction
 
+        # Set directions
         if (self.velocity.x > 0):
             self.direction = bs.Direction.RIGHT
         elif (self.velocity.x < 0):
@@ -74,13 +75,9 @@ class Character(pygame.sprite.Sprite):
         # Move.
         old_position = self.position
         self.position += self.velocity + 0.5 * self.acceleration
-        self.rect.x = self.position.x
-        self.rect.y = self.position.y
+        self.rect.x = round(self.position.x)
+        self.rect.y = round(self.position.y)
         self.ground_detector.update(self.rect)
-
-        # Check if character is not beyond screen
-        if (self.rect.x < 0):
-            self.rect.x = 0
 
         # Handle collisions.
         # Complexity is constant, because the character is allowed to
@@ -121,8 +118,6 @@ class Character(pygame.sprite.Sprite):
         # reaction force of the ground)- the 'update' method will take care
         # about gravity.
         self.acceleration = bs.Point(0, 0)
-        self.position.x = int(self.position.x)
-        self.position.y = int(self.position.y)
 
     def update(self):
         """ Update physical status of the object.
@@ -130,12 +125,7 @@ class Character(pygame.sprite.Sprite):
         It uses moves and acceleration methods to move the object and apply
         gravity to it. The friction and air resistance is also handled here.
 
-        Returns:
-            Point (obj): A Point storing a displacement value.
-
         """
-
-        old_position = bs.Point(self.position.x, self.position.y)
 
         self.accelerate(0, GRAVITY)
         if (not self.ground_detector.is_on_ground()):
@@ -145,8 +135,6 @@ class Character(pygame.sprite.Sprite):
 
         # Updating physics object attributes
         self.move()
-
-        return self.position - old_position
 
     def adjust_visual(self):
         """ Adjust a character rect to the position image should be drawn.

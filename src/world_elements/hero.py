@@ -31,3 +31,19 @@ class Hero(Character):
         self.position = self.level.spawn.position * CELL_SIZE
         self.velocity = bs.Point(0, 0)
         self.acceleration = bs.Point(0, 0)
+
+    def update(self):
+        # Check if character is not beyond screen
+        old_position = bs.Point.from_tuple(self.position.tuple())
+        super().update()
+
+        # Check if hero is not going out of the level terrain.
+        if (self.rect.x < 0):
+            self.rect.x = 0
+            self.position.x = 0
+            self.acceleration.x = 0
+
+        if (self.rect.y > SCREEN_HEIGHT):
+            self.die()
+
+        return self.position - old_position
