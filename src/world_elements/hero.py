@@ -38,7 +38,7 @@ class Hero(Character):
         self.position = self.level.spawn.position * CELL_SIZE
         self.velocity = bs.Point(0, 0)
         self.acceleration = bs.Point(0, 0)
-        self.immortality_timer = 0
+        self.immortality_timer = IMMORTALITY_TIME
 
     def dig(self):
         self.rect.y += CELL_SIZE/2

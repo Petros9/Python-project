@@ -1,3 +1,5 @@
+import pygame
+
 from basic import Point
 from character import Character
 import basic as bs
@@ -47,9 +49,33 @@ class Foe(Character):
             else:
                 return 0 < self.position.x - hero_position.x > FOE_RANGE
 
+    def reverse_direction(self):
+        if(self.foe_direct == bs.Direction.RIGHT):
+            self.foe_direct = bs.Direction.LEFT
+        else:
+            self.foe_direct = bs.Direction.RIGHT
+
     def update(self):
-        old_position = bs.Point.from_tuple(self.position.tuple())
+
+        old_point = self.position
+        if(self.foe_direct == bs.Direction.LEFT):
+            x_direction = -1
+
+        else:
+            x_direction = 1
+        self.accelerate(x_direction*HORIZONTAL_ACCELERATION/2, 0)
+        if (not self.ground_detector.is_on_ground()):
+            self.velocity.x = 0
+            self.accelerate(-x_direction*HORIZONTAL_ACCELERATION/2, 0)
+            self.position.x -= 15*x_direction
+            self.position.y -= 15
+            self.rect.x -= 15*x_direction
+            self.rect.y -= 15
+            self.reverse_direction()
+
         super().update()
-        return self.position - old_position
+
+        if (old_point == self.position):
+            self.reverse_direction()
 
 
