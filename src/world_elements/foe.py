@@ -1,10 +1,7 @@
-import pygame
-
-from basic import Point
 from character import Character
 import basic as bs
 from models import Models
-from settings import HORIZONTAL_ACCELERATION, IMMORTALITY_TIME, FOE_BULLETS_PER_BURST, CELL_SIZE, FOE_RANGE
+from settings import *
 
 
 class Foe(Character):
@@ -26,12 +23,12 @@ class Foe(Character):
 
     def shoot(self):
         if (self.foe_direct == bs.Direction.RIGHT):
-            bullet_position = Point(self.rect.x + 18, self.rect.y)
-            bullet_velocity = Point(15, 0)
+            bullet_position = bs.Point(self.rect.x + 18, self.rect.y)
+            bullet_velocity = bs.Point(15, 0)
             self.world.shoot(bullet_position, bullet_velocity)
         else:
-            bullet_position = Point(self.rect.x - 18, self.rect.y)
-            bullet_velocity = Point(-15, 0)
+            bullet_position = bs.Point(self.rect.x - 18, self.rect.y)
+            bullet_velocity = bs.Point(-15, 0)
             self.world.shoot(bullet_position, bullet_velocity)
 
     def change_image(self):
