@@ -51,7 +51,37 @@ class Level:
                 hero.die()
 
         for foe in self.foes:
-            foe.take_hit()
+            if (pygame.sprite.spritecollide(foe, self.bullets, True)):
+                foe.take_hit()
+
+            if (foe.foe_health == 0):
+                self.foes.remove(foe)
+
+
+    def move_foes(self):
+        for hero in self.heroes:
+            if(pygame.sprite.spritecollide(hero, self.foes, False)):
+                hero.take_hit()
+            if (hero.health == 0):
+                hero.die()
+
+        for foe in self.foes:
+            if(foe.immortality_timer > 0):
+                foe.immortality_timer -= 1
+            else:
+                foe.change_image()
+            if (foe.reload_timer == 0):
+                if (foe.bullets == 0):
+                    foe.reload_timer = FOE_RELOAD_TIME
+                    foe.bullets = FOE_BULLETS_PER_BURST
+                else:
+                    for hero in self.heroes:
+                        if (foe.reaches(hero.position)):
+                            foe.shoot()
+                            foe.bullets -= 1
+                            foe.reload_timer = FOE_TIME_BETWEEN_BULLETS_IN_BURST
+            else:
+                foe.reload_timer -= 1
 
     def shoot_towers(self):
         for tower in self.towers:
@@ -60,7 +90,7 @@ class Level:
                     tower.reload_timer = TOWER_RELOAD_TIME
                     tower.bullets = TOWER_BULLETS_PER_BURST
                 else:
-                    self.shoot(Point(tower.rect.x, tower.rect.y), Point(0, 3))
+                    self.shoot(Point(tower.rect.x+15, tower.rect.y+30), Point(0, 3))
                     tower.bullets -= 1
                     tower.reload_timer = TOWER_TIME_BETWEEN_BULLETS_IN_BURST
             else:

@@ -1,5 +1,4 @@
 import sys
-import time
 
 import pygame
 
@@ -65,7 +64,7 @@ def main():
     level_objects_images = {
         'platform': Models.PLATFORM_IMG,
         'flag': Models.FOE_FLAG_IMG,
-        'foe': Models.FOE_IMG,
+        'foe': Models.FOE_L_IMG,
         'tower': Models.TOWER_IMG,
         'bridge': Models.BRIDGE_IMG
     }
@@ -78,6 +77,7 @@ def main():
     # Main loop.
     pause = False
     ax = 0
+    clock = pygame.time.Clock()
     while (True):
 
         ay = 0
@@ -100,6 +100,8 @@ def main():
                         else:
                             ay = -JUMP_ACCELERATION
                     if (event.key == pygame.K_DOWN and not manfred.jumping):
+                        if(manfred.squat and manfred.position.y < 400):
+                            manfred.dig()
                         manfred.change_squat_state()
                     if (event.key == pygame.K_SPACE and not manfred.squat):
                         baron_shoot_sound.play()
@@ -144,11 +146,24 @@ def main():
 
         first_level.shoot_towers()
         first_level.move_bullets()
+        first_level.move_foes()
 
         if (manfred.direction is bs.Direction.RIGHT):
-            manfred.image = Models.BARON_R_IMG
+            if (manfred.squat == True):
+                manfred.image = Models.BARON_R_SQUAT_IMG
+            else:
+                if (manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_R_IMG
+                else:
+                    manfred.image = Models.BARON_R_DAM_IMG
         elif (manfred.direction is bs.Direction.LEFT):
-            manfred.image = Models.BARON_L_IMG
+            if (manfred.squat == True):
+                manfred.image = Models.BARON_L_SQUAT_IMG
+            else:
+                if (manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_L_IMG
+                else:
+                    manfred.image = Models.BARON_L_DAM_IMG
 
         # Draw things.
         first_level.all_platforms.draw(screen)
@@ -170,8 +185,7 @@ def main():
             pygame.sprite.Group([manfred.ground_detector]).draw(screen)
 
         pygame.display.flip()
-        time.sleep(0.05)
-
+        clock.tick(FPS)
 
 if (__name__ == "__main__"):
     main()
