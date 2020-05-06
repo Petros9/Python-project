@@ -91,9 +91,9 @@ def main():
             elif (event.type == pygame.KEYDOWN):
                 if (not pause):
                     if (event.key == pygame.K_RIGHT and not manfred.squat):
-                        ax = HORIZONTAL_ACCELERATION
+                            ax = HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_LEFT and not manfred.squat):
-                        ax = -HORIZONTAL_ACCELERATION
+                            ax = -HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_UP):
                         if (manfred.squat):
                             manfred.change_squat_state()
@@ -115,6 +115,7 @@ def main():
                 if (DEBUG and event.key == pygame.K_p):
                     pause = not pause
 
+        print(manfred.velocity.x)
         if (DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
                                                      LIGHT_GREEN)
@@ -160,7 +161,7 @@ def main():
                 else:
                     manfred.image = Models.BARON_R_DAM_JUMPING_IMG
 
-            elif (0.5 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
+            elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
                 if(manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_R_BRAKING_IMG
                 else:
@@ -183,7 +184,7 @@ def main():
                 else:
                     manfred.image = Models.BARON_L_DAM_JUMPING_IMG
 
-            elif (-0.5 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
+            elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
                 if(manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_L_BRAKING_IMG
                 else:
