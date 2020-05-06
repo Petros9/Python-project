@@ -74,7 +74,7 @@ class Foe(Character):
 
         if (old_position == self.position):
             self.reverse_direction()
-            
+
         elif(old_position.y != self.position.y and self.landed):
             self.reverse_direction()
             self.position = old_position
