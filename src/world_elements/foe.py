@@ -48,7 +48,7 @@ class Foe(Character):
             if(self.foe_direct == bs.Direction.LEFT):
                 return FOE_RANGE > self.position.x - hero_position.x > 0
             else:
-                return 0 < self.position.x - hero_position.x > FOE_RANGE
+                return 0 < - self.position.x + hero_position.x < FOE_RANGE
 
     def reverse_direction(self):
         if(self.foe_direct == bs.Direction.RIGHT):

@@ -13,6 +13,7 @@ class Hero(Character):
         self.squat = False
         self.level.heroes.add(self)
         self.immortality_timer = 0
+        self.jumping = True
 
     def take_hit(self):
         if (self.immortality_timer == 0):
@@ -48,6 +49,11 @@ class Hero(Character):
         # Check if character is not beyond screen
         old_position = bs.Point.from_tuple(self.position.tuple())
         super().update()
+
+        if (self.ground_detector.is_on_ground()):
+            self.jumping = False
+        else:
+            self.jumping = True
 
         if(self.immortality_timer > 0):
             self.immortality_timer -= 1
