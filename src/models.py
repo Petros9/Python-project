@@ -15,6 +15,11 @@ class Models:
         BARON_R_JUMPING_IMG = pygame.image.load(IMAGE_PATH + "baron_r_jumping.png")
         BARON_L_DAM_JUMPING_IMG = pygame.image.load(IMAGE_PATH + "baron_dam_l_jumping.png")
         BARON_R_DAM_JUMPING_IMG = pygame.image.load(IMAGE_PATH + "baron_dam_r_jumping.png")
+        BARON_R_BRAKING_IMG = pygame.image.load(IMAGE_PATH + "baron_r_braking.png")
+        BARON_L_BRAKING_IMG = pygame.image.load(IMAGE_PATH + "baron_l_braking.png")
+        BARON_R_DAM_BRAKING_IMG = pygame.image.load(IMAGE_PATH + "baron_dam_r_braking.png")
+        BARON_L_DAM_BRAKING_IMG = pygame.image.load(IMAGE_PATH + "baron_dam_l_braking.png")
+
         PLATFORM_IMG = pygame.image.load(IMAGE_PATH + "platform.png")
         BRIDGE_IMG = pygame.image.load(IMAGE_PATH + "bridge.png")
         FOE_FLAG_IMG = pygame.image.load(IMAGE_PATH + "foe_flag.png")

@@ -150,27 +150,44 @@ def main():
         first_level.move_foes()
 
         if (manfred.direction is bs.Direction.RIGHT):
+
             if (manfred.squat is True):
                 manfred.image = Models.BARON_R_SQUAT_IMG
+
             elif (manfred.jumping):
                 if(manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_R_JUMPING_IMG
                 else:
                     manfred.image = Models.BARON_R_DAM_JUMPING_IMG
+
+            elif (0.5 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
+                if(manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_R_BRAKING_IMG
+                else:
+                    manfred.image = Models.BARON_R_DAM_BRAKING_IMG
+
             else:
                 if (manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_R_IMG
                 else:
                     manfred.image = Models.BARON_R_DAM_IMG
+
         elif (manfred.direction is bs.Direction.LEFT):
+
             if (manfred.squat is True):
                 manfred.image = Models.BARON_L_SQUAT_IMG
-            elif (manfred.jumping):
 
+            elif (manfred.jumping):
                 if(manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_L_JUMPING_IMG
                 else:
                     manfred.image = Models.BARON_L_DAM_JUMPING_IMG
+
+            elif (-0.5 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
+                if(manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_L_BRAKING_IMG
+                else:
+                    manfred.image = Models.BARON_L_DAM_BRAKING_IMG
             else:
                 if (manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_L_IMG
