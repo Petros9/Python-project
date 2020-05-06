@@ -142,7 +142,7 @@ class Character(pygame.sprite.Sprite):
         A character image is CELL_SIZE x CELL_SIZE size, but its visual
         presentation suggests, that it occupies only half of this square.
         Therefore, the rect representing a character should occupy only the
-        half of the of the square image. To make drawing proper,
+        half of the square image. To make drawing proper,
         the translation of a rect attribute to the left is performed after
         the update (the best moment to adjust is right before drawing a
         character). The relative misplacement of the rect attribute
