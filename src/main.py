@@ -90,9 +90,9 @@ def main():
                 sys.exit(0)
             elif (event.type == pygame.KEYDOWN):
                 if (not pause):
-                    if (event.key == pygame.K_RIGHT and not manfred.squat):
+                    if (event.key == pygame.K_RIGHT):
                             ax = HORIZONTAL_ACCELERATION
-                    if (event.key == pygame.K_LEFT and not manfred.squat):
+                    if (event.key == pygame.K_LEFT):
                             ax = -HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_UP):
                         if (manfred.squat):
@@ -130,6 +130,9 @@ def main():
         screen.fill(BLACK)
 
         # Apply motions logic.
+        if (manfred.squat):
+            ax = 0
+            ay = 0
         manfred.accelerate(ax, ay)
         hero_displacement = manfred.update()
         first_level.foes.update()
