@@ -16,13 +16,13 @@ class Foe(Character):
     def take_hit(self):
         self.foe_health -= 1
         self.immortality_timer = IMMORTALITY_TIME
-        if(self.foe_direct == bs.Direction.LEFT):
+        if(self.foe_direct is bs.Direction.LEFT):
             self.image = Models.FOE_L_DAM_IMG
         else:
             self.image = Models.FOE_R_DAM_IMG
 
     def shoot(self):
-        if (self.foe_direct == bs.Direction.RIGHT):
+        if (self.foe_direct is bs.Direction.RIGHT):
             bullet_position = bs.Point(self.rect.x + 18, self.rect.y)
             bullet_velocity = bs.Point(15, 0)
             self.world.shoot(bullet_position, bullet_velocity)
@@ -32,7 +32,7 @@ class Foe(Character):
             self.world.shoot(bullet_position, bullet_velocity)
 
     def change_image(self):
-        if(self.foe_direct == bs.Direction.RIGHT):
+        if(self.foe_direct is bs.Direction.RIGHT):
             self.image = Models.FOE_R_IMG
         else:
             self.image = Models.FOE_L_IMG
@@ -41,13 +41,13 @@ class Foe(Character):
         if(abs(hero_position.y - self.position.y) > CELL_SIZE*3/4):
             return False
         else:
-            if(self.foe_direct == bs.Direction.LEFT):
+            if(self.foe_direct is bs.Direction.LEFT):
                 return FOE_RANGE > self.position.x - hero_position.x > 0
             else:
                 return 0 < self.position.x - hero_position.x > FOE_RANGE
 
     def reverse_direction(self):
-        if(self.foe_direct == bs.Direction.RIGHT):
+        if(self.foe_direct is bs.Direction.RIGHT):
             self.foe_direct = bs.Direction.LEFT
         else:
             self.foe_direct = bs.Direction.RIGHT
@@ -55,18 +55,18 @@ class Foe(Character):
     def update(self):
 
         old_point = self.position
-        if(self.foe_direct == bs.Direction.LEFT):
+        if(self.foe_direct is bs.Direction.LEFT):
             x_direction = -1
 
         else:
             x_direction = 1
-        self.accelerate(x_direction*HORIZONTAL_ACCELERATION/2, 0)
+        self.accelerate(x_direction * HORIZONTAL_ACCELERATION / 2, 0)
         if (not self.ground_detector.is_on_ground()):
             self.velocity.x = 0
-            self.accelerate(-x_direction*HORIZONTAL_ACCELERATION/2, 0)
-            self.position.x -= 15*x_direction
+            self.accelerate(-x_direction * HORIZONTAL_ACCELERATION / 2, 0)
+            self.position.x -= 15 * x_direction
             self.position.y -= 15
-            self.rect.x -= 15*x_direction
+            self.rect.x -= 15 * x_direction
             self.rect.y -= 15
             self.reverse_direction()
 

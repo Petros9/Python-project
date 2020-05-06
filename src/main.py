@@ -149,7 +149,7 @@ def main():
         first_level.move_foes()
 
         if (manfred.direction is bs.Direction.RIGHT):
-            if (manfred.squat == True):
+            if (manfred.squat is True):
                 manfred.image = Models.BARON_R_SQUAT_IMG
             else:
                 if (manfred.immortality_timer == 0):
@@ -157,7 +157,7 @@ def main():
                 else:
                     manfred.image = Models.BARON_R_DAM_IMG
         elif (manfred.direction is bs.Direction.LEFT):
-            if (manfred.squat == True):
+            if (manfred.squat is True):
                 manfred.image = Models.BARON_L_SQUAT_IMG
             else:
                 if (manfred.immortality_timer == 0):
@@ -173,6 +173,9 @@ def main():
         first_level.bullets.draw(screen)
 
         manfred.adjust_visual()
+        for foe in first_level.foes:
+            foe.adjust_visual()
+
         first_level.heroes.draw(screen)
         first_level.foes.draw(screen)
 
@@ -186,6 +189,7 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
+
 
 if (__name__ == "__main__"):
     main()
