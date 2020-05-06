@@ -116,7 +116,7 @@ class Character(pygame.sprite.Sprite):
 
         # Clear the acceleration to avoid jiggling on the floor (it simulates
         # reaction force of the ground)- the 'update' method will take care
-        # about gravity.
+        # of gravity.
         self.acceleration = bs.Point(0, 0)
 
     def update(self):
@@ -141,8 +141,8 @@ class Character(pygame.sprite.Sprite):
 
         A character image is CELL_SIZE x CELL_SIZE size, but its visual
         presentation suggests, that it occupies only half of this square.
-        Therefore, the rect representing a character occupies only half of
-        the square of the image, it should visually. To make drawing proper
+        Therefore, the rect representing a character should occupy only the
+        half of the square image. To make drawing proper,
         the translation of a rect attribute to the left is performed after
         the update (the best moment to adjust is right before drawing a
         character). The relative misplacement of the rect attribute

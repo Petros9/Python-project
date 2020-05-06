@@ -15,7 +15,6 @@ class Foe(Character):
         self.immortality_timer = 0
         self.reload_timer = 0
         self.bullets = FOE_BULLETS_PER_BURST
-        self.landed = False
 
     def take_hit(self):
         self.foe_health -= 1
@@ -48,7 +47,7 @@ class Foe(Character):
             if(self.foe_direct == bs.Direction.LEFT):
                 return FOE_RANGE > self.position.x - hero_position.x > 0
             else:
-                return 0 < - self.position.x + hero_position.x < FOE_RANGE
+                return 0 < self.position.x - hero_position.x > FOE_RANGE
 
     def reverse_direction(self):
         if(self.foe_direct == bs.Direction.RIGHT):
@@ -58,25 +57,25 @@ class Foe(Character):
 
     def update(self):
 
-        old_position = self.position
+        old_point = self.position
         if(self.foe_direct == bs.Direction.LEFT):
             x_direction = -1
 
         else:
             x_direction = 1
         self.accelerate(x_direction*HORIZONTAL_ACCELERATION/2, 0)
-
-        if(not self.landed):
-            if(self.ground_detector.is_on_ground()):
-                self.landed = True
+        if (not self.ground_detector.is_on_ground()):
+            self.velocity.x = 0
+            self.accelerate(-x_direction*HORIZONTAL_ACCELERATION/2, 0)
+            self.position.x -= 15*x_direction
+            self.position.y -= 15
+            self.rect.x -= 15*x_direction
+            self.rect.y -= 15
+            self.reverse_direction()
 
         super().update()
 
-        if (old_position == self.position):
+        if (old_point == self.position):
             self.reverse_direction()
 
-        elif(old_position.y != self.position.y and self.landed):
-            self.reverse_direction()
-            self.position = old_position
-            self.velocity.x = 0
-            self.velocity.y = 0
+

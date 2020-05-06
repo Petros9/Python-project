@@ -4,7 +4,6 @@ import basic as bs
 from settings import *
 
 
-
 class Hero(Character):
     def __init__(self, level, img):
         self.level = level
@@ -23,14 +22,15 @@ class Hero(Character):
     def change_squat_state(self):
         self.squat = not self.squat
 
-
     def shoot(self):
-        if (self.direction == bs.Direction.RIGHT):
-            bullet_position = Point(self.rect.x + CELL_SIZE/2, self.rect.y + CELL_SIZE/4)
+        if (self.direction is bs.Direction.RIGHT):
+            bullet_position = Point(self.rect.x + CELL_SIZE/2,
+                                    self.rect.y + CELL_SIZE/4)
             bullet_velocity = Point(CELL_SIZE/8 * 3, 0)
             self.level.shoot(bullet_position, bullet_velocity)
         else:
-            bullet_position = Point(self.rect.x + - CELL_SIZE/2, self.rect.y + CELL_SIZE/4)
+            bullet_position = Point(self.rect.x + - CELL_SIZE/2,
+                                    self.rect.y + CELL_SIZE/4)
             bullet_velocity = Point(-CELL_SIZE/8 * 3, 0)
             self.level.shoot(bullet_position, bullet_velocity)
 

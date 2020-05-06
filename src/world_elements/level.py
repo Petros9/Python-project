@@ -57,7 +57,6 @@ class Level:
             if (foe.foe_health == 0):
                 self.foes.remove(foe)
 
-
     def move_foes(self):
         for hero in self.heroes:
             if(pygame.sprite.spritecollide(hero, self.foes, False)):
@@ -90,14 +89,15 @@ class Level:
                     tower.reload_timer = TOWER_RELOAD_TIME
                     tower.bullets = TOWER_BULLETS_PER_BURST
                 else:
-                    self.shoot(Point(tower.rect.x+15, tower.rect.y+30), Point(0, 3))
+                    self.shoot(Point(tower.rect.x+15, tower.rect.y+30),
+                               Point(0, 3))
                     tower.bullets -= 1
                     tower.reload_timer = TOWER_TIME_BETWEEN_BULLETS_IN_BURST
             else:
                 tower.reload_timer -= 1
 
     def follow_hero(self, dx):
-        """ Move objects to follow hero.
+        """ Move objects to make the camera follow the hero.
         """
         self.all_platforms.update(dx)
         self.flags.update(dx)
