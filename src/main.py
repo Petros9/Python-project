@@ -104,7 +104,7 @@ def main():
                             manfred.dig()
                         manfred.change_squat_state()
                     if (event.key == pygame.K_SPACE and not manfred.squat):
-                        
+
                         baron_shoot_sound.play()
                         manfred.shoot()
                 if (event.key == pygame.K_ESCAPE):
@@ -152,6 +152,11 @@ def main():
         if (manfred.direction is bs.Direction.RIGHT):
             if (manfred.squat is True):
                 manfred.image = Models.BARON_R_SQUAT_IMG
+            elif (manfred.jumping):
+                if(manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_R_JUMPING_IMG
+                else:
+                    manfred.image = Models.BARON_R_DAM_JUMPING_IMG
             else:
                 if (manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_R_IMG
@@ -160,6 +165,12 @@ def main():
         elif (manfred.direction is bs.Direction.LEFT):
             if (manfred.squat is True):
                 manfred.image = Models.BARON_L_SQUAT_IMG
+            elif (manfred.jumping):
+
+                if(manfred.immortality_timer == 0):
+                    manfred.image = Models.BARON_L_JUMPING_IMG
+                else:
+                    manfred.image = Models.BARON_L_DAM_JUMPING_IMG
             else:
                 if (manfred.immortality_timer == 0):
                     manfred.image = Models.BARON_L_IMG
