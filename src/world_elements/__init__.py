@@ -7,3 +7,4 @@ from .level import Level
 from .platform import Platform
 from .spawn import Spawn
 from .tower import Tower
+from .boss import Boss

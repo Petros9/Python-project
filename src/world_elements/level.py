@@ -24,7 +24,7 @@ class Level:
     """
 
     def __init__(self, all_platforms, floors, walls, corners, foes, towers,
-                 bridges, flags, heroes=None, spawn=None):
+                 bridges, flags, boss, heroes=None, spawn=None):
         self.spawn = spawn if (spawn) else we.Spawn()
         self.all_platforms = all_platforms
         self.floors = floors
@@ -37,6 +37,7 @@ class Level:
         self.heroes = heroes if (heroes) else pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.foe_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "foe.wav")
+        self.boss = boss
 
     def shoot(self, start_position, velocity):
         self.foe_shoot_sound.play()

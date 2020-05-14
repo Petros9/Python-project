@@ -95,18 +95,23 @@ def main():
         'flag': Models.FOE_FLAG_IMG,
         'foe': Models.FOE_L_IMG,
         'tower': Models.TOWER_IMG,
-        'bridge': Models.BRIDGE_IMG
+        'bridge': Models.BRIDGE_IMG,
+        'boss': Models.COMPANION
     }
 
     # First level init.
     zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(level_objects_images)
+
     first_level = LevelLoader(LEVELS_PATH + "first_level").load_level(
         level_objects_images)
+
     second_level = LevelLoader(LEVELS_PATH + "second_level").load_level(
         level_objects_images)
+
     boss_level = LevelLoader(LEVELS_PATH + "boss_level").load_level(
         level_objects_images)
-    level_list = [zero_level, first_level, second_level, boss_level]
+
+    level_list = [zero_level, boss_level, first_level, second_level]
     level_counter = 0
     ahead_counter = 0
     timer = 0
@@ -258,6 +263,7 @@ def main():
         level_list[level_counter].bridges.draw(screen)
         level_list[level_counter].towers.draw(screen)
         level_list[level_counter].bullets.draw(screen)
+        level_list[level_counter].boss.draw(screen)
 
         if(level_counter == 0 and intro_timer < 300):
             intro_level(screen, intro_timer, manfred)

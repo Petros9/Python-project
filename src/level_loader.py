@@ -31,7 +31,7 @@ class LevelLoader:
         level = we.Level(pygame.sprite.Group(), pygame.sprite.Group(),
                          pygame.sprite.Group(), pygame.sprite.Group(),
                          pygame.sprite.Group(), pygame.sprite.Group(),
-                         pygame.sprite.Group(), pygame.sprite.Group())
+                         pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group())
 
         platforms = []
         platform_is_at = defaultdict(lambda: False)
@@ -56,6 +56,11 @@ class LevelLoader:
                         if (line[j] == '^'):
                             level.towers.add(
                                 [we.Tower(object_images['tower'], 0.5 * j, i)])
+
+                        if (line[j] == '@'):
+                            level.boss.add(
+                                [we.Boss(object_images['boss'], 0.5 * j, i, level)])
+
                         if (line[j] == '&'):
                             bridge = we.Bridge(object_images['bridge'],
                                                0.5 * j, i)
