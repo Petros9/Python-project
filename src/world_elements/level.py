@@ -99,6 +99,15 @@ class Level:
             else:
                 tower.reload_timer -= 1
 
+    def move_boss(self):
+        for boss in self.boss:
+            print(boss.position.y)
+            if(boss.position.y == 440):
+                boss.jump()
+                print("opa")
+
+
+
     def follow_hero(self, dx):
         """ Move objects to make the camera follow the hero.
         """

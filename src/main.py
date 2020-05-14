@@ -203,6 +203,7 @@ def main():
         level_list[level_counter].shoot_towers()
         level_list[level_counter].move_bullets()
         level_list[level_counter].move_foes()
+        level_list[level_counter].move_boss()
         if (manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
             if (manfred.direction is bs.Direction.RIGHT):
                 manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
@@ -287,7 +288,6 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
-
 
 if (__name__ == "__main__"):
     main()
