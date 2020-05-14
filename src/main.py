@@ -9,6 +9,7 @@ from level_loader import LevelLoader
 from settings import *
 from animations.baron_moving_animations import Animation_models
 
+
 def game_intro(screen):
     intro = True
     title = pygame.image.load(IMAGE_PATH + "title.png")
@@ -27,6 +28,7 @@ def game_intro(screen):
     screen.blit(text2, (510, 300))
     pygame.display.update()
 
+
     # Intro logic
     while (intro):
         for event in pygame.event.get():
@@ -44,6 +46,34 @@ def game_intro(screen):
             if (event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE):
                 intro = False
 
+
+def intro_level(screen, intro_timer, manfred):
+    font = pygame.font.SysFont("ComicSans", 15)
+    text1 = font.render("Kapitanie! Zaatakowały", 1, BLACK)
+    text2 = font.render("nas straszne gorgole! AAAAA", 1, BLACK)
+    if (intro_timer < 140):
+        screen.blit(Models.COMPANION, (300, 200))
+        pygame.draw.rect(screen, WHITE, (240, 160, 150, 30))
+        screen.blit(text1, (242, 160))
+        screen.blit(text2, (242, 175))
+
+    elif(140 < intro_timer < 160):
+        screen.blit(Models.COMPANION_DAM, (300, 200))
+    if(160> intro_timer > 110):
+        screen.blit(Models.FOE_L_IMG, (440, 200))
+        if(intro_timer < 140):
+            screen.blit(Models.BULLET_IMG, (440 + (110 - intro_timer)*4, 210))
+
+    if(intro_timer > 160):
+        if(intro_timer%2 == 0):
+            screen.blit(Models.FOE_L_IMG, (440, 200 + (160 - intro_timer)*4))
+        else:
+            screen.blit(Models.FOE_R_IMG, (440, 200 + (160 - intro_timer)*4))
+
+    text3 = font.render("Zemszczę się...", 1, BLACK)
+    if(intro_timer > 260):
+        pygame.draw.rect(screen, WHITE, (manfred.position.x - 80, manfred.position.y - 15, 80, 15))
+        screen.blit(text3, (manfred.position.x - 78, manfred.position.y - 13))
 
 def main():
     # Basics init.
@@ -74,8 +104,9 @@ def main():
         level_objects_images)
     second_level = LevelLoader(LEVELS_PATH + "second_level").load_level(
         level_objects_images)
-
-    level_list = [zero_level, first_level, second_level]
+    boss_level = LevelLoader(LEVELS_PATH + "boss_level").load_level(
+        level_objects_images)
+    level_list = [zero_level, first_level, second_level, boss_level]
     level_counter = 0
     ahead_counter = 0
     timer = 0
@@ -86,12 +117,12 @@ def main():
     ax = 0
     clock = pygame.time.Clock()
     manfred_animations_model = Animation_models()
-
+    intro_timer = 0
     while (True):
         if (ahead_counter != level_counter and timer == 0):
             level_counter += 1
             manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
-        if(timer > 0):
+        if (timer > 0):
             timer -= 1
         ay = 0
         for event in pygame.event.get():
@@ -104,20 +135,19 @@ def main():
             elif (event.type == pygame.KEYDOWN):
                 if (not pause):
                     if (event.key == pygame.K_RIGHT):
-                            ax = HORIZONTAL_ACCELERATION
+                        ax = HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_LEFT):
-                            ax = -HORIZONTAL_ACCELERATION
+                        ax = -HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_UP):
                         if (manfred.squat):
                             manfred.change_squat_state()
                         else:
                             ay = -JUMP_ACCELERATION
                     if (event.key == pygame.K_DOWN and not manfred.jumping):
-                        if(manfred.squat and manfred.position.y < 400):
+                        if (manfred.squat and manfred.position.y < 400):
                             manfred.dig()
                         manfred.change_squat_state()
                     if (event.key == pygame.K_SPACE and not manfred.squat):
-
                         baron_shoot_sound.play()
                         manfred.shoot()
                 if (event.key == pygame.K_ESCAPE):
@@ -168,12 +198,12 @@ def main():
         level_list[level_counter].shoot_towers()
         level_list[level_counter].move_bullets()
         level_list[level_counter].move_foes()
-        if(manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
+        if (manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
             if (manfred.direction is bs.Direction.RIGHT):
                 manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
                 manfred.next_animation_model()
             else:
-                manfred.image =manfred_animations_model.models_list[(2, manfred.current_animation_model)]
+                manfred.image = manfred_animations_model.models_list[(2, manfred.current_animation_model)]
                 manfred.next_animation_model()
         else:
             manfred.current_animation_model = 0
@@ -183,13 +213,13 @@ def main():
                     manfred.image = Models.BARON_R_SQUAT_IMG
 
                 elif (manfred.jumping):
-                    if(manfred.immortality_timer == 0):
+                    if (manfred.immortality_timer == 0):
                         manfred.image = Models.BARON_R_JUMPING_IMG
                     else:
                         manfred.image = Models.BARON_R_DAM_JUMPING_IMG
 
-                elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
-                    if(manfred.immortality_timer == 0):
+                elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION * 4):
+                    if (manfred.immortality_timer == 0):
                         manfred.image = Models.BARON_R_BRAKING_IMG
                     else:
                         manfred.image = Models.BARON_R_DAM_BRAKING_IMG
@@ -206,13 +236,13 @@ def main():
                     manfred.image = Models.BARON_L_SQUAT_IMG
 
                 elif (manfred.jumping):
-                    if(manfred.immortality_timer == 0):
+                    if (manfred.immortality_timer == 0):
                         manfred.image = Models.BARON_L_JUMPING_IMG
                     else:
                         manfred.image = Models.BARON_L_DAM_JUMPING_IMG
 
-                elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
-                    if(manfred.immortality_timer == 0):
+                elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION * 4):
+                    if (manfred.immortality_timer == 0):
                         manfred.image = Models.BARON_L_BRAKING_IMG
                     else:
                         manfred.image = Models.BARON_L_DAM_BRAKING_IMG
@@ -228,6 +258,11 @@ def main():
         level_list[level_counter].bridges.draw(screen)
         level_list[level_counter].towers.draw(screen)
         level_list[level_counter].bullets.draw(screen)
+
+        if(level_counter == 0 and intro_timer < 300):
+            intro_level(screen, intro_timer, manfred)
+            intro_timer += 1
+            print(intro_timer)
 
         manfred.adjust_visual()
         for foe in level_list[level_counter].foes:
@@ -246,6 +281,7 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
+
 
 if (__name__ == "__main__"):
     main()
