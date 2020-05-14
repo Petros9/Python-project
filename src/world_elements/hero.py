@@ -13,11 +13,16 @@ class Hero(Character):
         self.level.heroes.add(self)
         self.immortality_timer = 0
         self.jumping = True
+        self.current_animation_model = 0
 
     def take_hit(self):
         if (self.immortality_timer == 0):
             self.immortality_timer = IMMORTALITY_TIME
             self.health -= 1
+
+    def next_animation_model(self):
+        self.current_animation_model += 1
+        self.current_animation_model %= 22
 
     def change_squat_state(self):
         self.squat = not self.squat

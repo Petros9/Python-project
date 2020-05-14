@@ -7,7 +7,7 @@ import basic as bs
 from models import Models
 from level_loader import LevelLoader
 from settings import *
-
+from animations.baron_moving_animations import Animation_models
 
 def game_intro(screen):
     intro = True
@@ -78,6 +78,7 @@ def main():
     pause = False
     ax = 0
     clock = pygame.time.Clock()
+    manfred_animations_model = Animation_models()
     while (True):
 
         ay = 0
@@ -114,8 +115,6 @@ def main():
                     manfred.die()
                 if (DEBUG and event.key == pygame.K_p):
                     pause = not pause
-
-        print(manfred.velocity.x)
         if (DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
                                                      LIGHT_GREEN)
@@ -133,6 +132,9 @@ def main():
         if (manfred.squat):
             ax = 0
             ay = 0
+
+        old_position = manfred.position
+
         manfred.accelerate(ax, ay)
         hero_displacement = manfred.update()
         first_level.foes.update()
@@ -152,51 +154,59 @@ def main():
         first_level.shoot_towers()
         first_level.move_bullets()
         first_level.move_foes()
-
-        if (manfred.direction is bs.Direction.RIGHT):
-
-            if (manfred.squat is True):
-                manfred.image = Models.BARON_R_SQUAT_IMG
-
-            elif (manfred.jumping):
-                if(manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_R_JUMPING_IMG
-                else:
-                    manfred.image = Models.BARON_R_DAM_JUMPING_IMG
-
-            elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
-                if(manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_R_BRAKING_IMG
-                else:
-                    manfred.image = Models.BARON_R_DAM_BRAKING_IMG
-
+        if(manfred.rect.x != old_position.x and manfred.rect.y == old_position.y):
+            if (manfred.direction is bs.Direction.RIGHT):
+                manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
+                manfred.next_animation_model()
             else:
-                if (manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_R_IMG
-                else:
-                    manfred.image = Models.BARON_R_DAM_IMG
+                manfred.image =manfred_animations_model.models_list[(2, manfred.current_animation_model)]
+                manfred.next_animation_model()
+        else:
+            manfred.current_animation_model = 0
+            if (manfred.direction is bs.Direction.RIGHT):
 
-        elif (manfred.direction is bs.Direction.LEFT):
+                if (manfred.squat is True):
+                    manfred.image = Models.BARON_R_SQUAT_IMG
 
-            if (manfred.squat is True):
-                manfred.image = Models.BARON_L_SQUAT_IMG
+                elif (manfred.jumping):
+                    if(manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_R_JUMPING_IMG
+                    else:
+                        manfred.image = Models.BARON_R_DAM_JUMPING_IMG
 
-            elif (manfred.jumping):
-                if(manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_L_JUMPING_IMG
-                else:
-                    manfred.image = Models.BARON_L_DAM_JUMPING_IMG
+                elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION*4):
+                    if(manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_R_BRAKING_IMG
+                    else:
+                        manfred.image = Models.BARON_R_DAM_BRAKING_IMG
 
-            elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
-                if(manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_L_BRAKING_IMG
                 else:
-                    manfred.image = Models.BARON_L_DAM_BRAKING_IMG
-            else:
-                if (manfred.immortality_timer == 0):
-                    manfred.image = Models.BARON_L_IMG
+                    if (manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_R_IMG
+                    else:
+                        manfred.image = Models.BARON_R_DAM_IMG
+
+            elif (manfred.direction is bs.Direction.LEFT):
+
+                if (manfred.squat is True):
+                    manfred.image = Models.BARON_L_SQUAT_IMG
+
+                elif (manfred.jumping):
+                    if(manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_L_JUMPING_IMG
+                    else:
+                        manfred.image = Models.BARON_L_DAM_JUMPING_IMG
+
+                elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION*4):
+                    if(manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_L_BRAKING_IMG
+                    else:
+                        manfred.image = Models.BARON_L_DAM_BRAKING_IMG
                 else:
-                    manfred.image = Models.BARON_L_DAM_IMG
+                    if (manfred.immortality_timer == 0):
+                        manfred.image = Models.BARON_L_IMG
+                    else:
+                        manfred.image = Models.BARON_L_DAM_IMG
 
         # Draw things.
         first_level.all_platforms.draw(screen)
