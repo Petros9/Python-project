@@ -70,10 +70,12 @@ def main():
 
     # First level init.
     zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(level_objects_images)
-    first_level = LevelLoader(LEVELS_PATH + "test_level").load_level(
+    first_level = LevelLoader(LEVELS_PATH + "first_level").load_level(
+        level_objects_images)
+    second_level = LevelLoader(LEVELS_PATH + "second_level").load_level(
         level_objects_images)
 
-    level_list = [zero_level, first_level]
+    level_list = [zero_level, first_level, second_level]
     level_counter = 0
     ahead_counter = 0
     timer = 0
@@ -161,7 +163,7 @@ def main():
                 flag.image = Models.BARON_FLAG_IMG
                 flag.captured = True
                 ahead_counter += 1
-                timer = 2*IMMORTALITY_TIME
+                timer = IMMORTALITY_TIME
 
         level_list[level_counter].shoot_towers()
         level_list[level_counter].move_bullets()
@@ -244,7 +246,6 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
-
 
 if (__name__ == "__main__"):
     main()

@@ -22,6 +22,7 @@ class Models:
 
         PLATFORM_IMG = pygame.image.load(IMAGE_PATH + "platform.png")
         BRIDGE_IMG = pygame.image.load(IMAGE_PATH + "bridge.png")
+        BRIDGE_DAM = pygame.image.load(IMAGE_PATH + "bridge_dam.png")
         FOE_FLAG_IMG = pygame.image.load(IMAGE_PATH + "foe_flag.png")
         BARON_FLAG_IMG = pygame.image.load(IMAGE_PATH + "baron_flag.png")
         BULLET_IMG = pygame.image.load(IMAGE_PATH + "bullet.png")
