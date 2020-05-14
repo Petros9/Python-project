@@ -31,6 +31,7 @@ class Models:
         FOE_L_DAM_IMG = pygame.image.load(IMAGE_PATH + "foe_dam_l.png")
         HEART_IMG = pygame.image.load(IMAGE_PATH + "heart.png")
         TOWER_IMG = pygame.image.load(IMAGE_PATH + "tower.png")
+        COMPANION = pygame.image.load(IMAGE_PATH + "compan.png")
 
         R_1 = pygame.image.load(BARON_RIGHT_ANIMATION_PATH + "r_1.png")
         R_2 = pygame.image.load(BARON_RIGHT_ANIMATION_PATH + "r_2.png")

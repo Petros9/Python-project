@@ -51,7 +51,6 @@ def main():
 
     pygame.mixer.init()
 
-    pygame.mixer.music.load(SOUND_PATH + "theme.wav")
     baron_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "baron_shoot.wav")
     if (not DEBUG):
         pygame.mixer.music.play(-1)
@@ -59,7 +58,7 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     game_intro(screen)
-
+    pygame.mixer.music.load(SOUND_PATH + "theme.wav")
     # Images for level loader.
     level_objects_images = {
         'platform': Models.PLATFORM_IMG,
@@ -70,17 +69,28 @@ def main():
     }
 
     # First level init.
+    zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(level_objects_images)
     first_level = LevelLoader(LEVELS_PATH + "test_level").load_level(
         level_objects_images)
-    manfred = we.Hero(first_level, Models.BARON_R_IMG)
+
+    level_list = [zero_level, first_level]
+    level_counter = 0
+    ahead_counter = 0
+    timer = 0
+    manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
 
     # Main loop.
     pause = False
     ax = 0
     clock = pygame.time.Clock()
     manfred_animations_model = Animation_models()
-    while (True):
 
+    while (True):
+        if (ahead_counter != level_counter and timer == 0):
+            level_counter += 1
+            manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
+        if(timer > 0):
+            timer -= 1
         ay = 0
         for event in pygame.event.get():
             if (event.type == pygame.KEYUP and
@@ -137,23 +147,25 @@ def main():
 
         manfred.accelerate(ax, ay)
         hero_displacement = manfred.update()
-        first_level.foes.update()
+        level_list[level_counter].foes.update()
 
         # Make screen following the hero if his velocity is significant.
         if (manfred.rect.centerx > 0.5 * SCREEN_WIDTH and
                 hero_displacement.x > 0):
-            first_level.follow_hero(-hero_displacement.x)
+            level_list[level_counter].follow_hero(-hero_displacement.x)
 
         flags_in_touch = pygame.sprite.spritecollide(manfred,
-                                                     first_level.flags, False)
+                                                     level_list[level_counter].flags, False)
         for flag in flags_in_touch:
             if (not flag.captured):
                 flag.image = Models.BARON_FLAG_IMG
                 flag.captured = True
+                ahead_counter += 1
+                timer = 2*IMMORTALITY_TIME
 
-        first_level.shoot_towers()
-        first_level.move_bullets()
-        first_level.move_foes()
+        level_list[level_counter].shoot_towers()
+        level_list[level_counter].move_bullets()
+        level_list[level_counter].move_foes()
         if(manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
             if (manfred.direction is bs.Direction.RIGHT):
                 manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
@@ -209,18 +221,18 @@ def main():
                         manfred.image = Models.BARON_L_DAM_IMG
 
         # Draw things.
-        first_level.all_platforms.draw(screen)
-        first_level.flags.draw(screen)
-        first_level.bridges.draw(screen)
-        first_level.towers.draw(screen)
-        first_level.bullets.draw(screen)
+        level_list[level_counter].all_platforms.draw(screen)
+        level_list[level_counter].flags.draw(screen)
+        level_list[level_counter].bridges.draw(screen)
+        level_list[level_counter].towers.draw(screen)
+        level_list[level_counter].bullets.draw(screen)
 
         manfred.adjust_visual()
-        for foe in first_level.foes:
+        for foe in level_list[level_counter].foes:
             foe.adjust_visual()
 
-        first_level.heroes.draw(screen)
-        first_level.foes.draw(screen)
+        level_list[level_counter].heroes.draw(screen)
+        level_list[level_counter].foes.draw(screen)
 
         hero_health = manfred.health
         while (hero_health > 0):
