@@ -38,6 +38,9 @@ LEVELS_PATH = SEP.join(['..', 'Resources', 'levels']) + SEP
 
 BARON_RIGHT_ANIMATION_PATH = SEP.join(['..', 'Resources', 'img', 'baron_animation', 'right']) + SEP
 BARON_LEFT_ANIMATION_PATH = SEP.join(['..', 'Resources', 'img', 'baron_animation', 'left']) + SEP
+
+FOE_RIGHT_ANIMATION_PATH = SEP.join(['..', 'Resources', 'img', 'foe_animation', 'right']) + SEP
+FOE_LEFT_ANIMATION_PATH = SEP.join(['..', 'Resources', 'img', 'foe_animation', 'left']) + SEP
 # Towers
 TOWER_BULLETS_PER_BURST = 3
 TOWER_TIME_BETWEEN_BULLETS_IN_BURST = 7

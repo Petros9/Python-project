@@ -36,8 +36,10 @@ class Level:
         self.flags = flags
         self.heroes = heroes if (heroes) else pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
+        self.foe_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "foe.wav")
 
     def shoot(self, start_position, velocity):
+        self.foe_shoot_sound.play()
         self.bullets.add(we.Bullet(Models.BULLET_IMG, start_position,
                                    velocity))
 

@@ -4,6 +4,7 @@ from basic import Point
 from character import Character
 import basic as bs
 from models import Models
+from animations.foe_moving_animation import models_list
 from settings import HORIZONTAL_ACCELERATION, IMMORTALITY_TIME, FOE_BULLETS_PER_BURST, CELL_SIZE, FOE_RANGE
 
 
@@ -16,6 +17,11 @@ class Foe(Character):
         self.reload_timer = 0
         self.bullets = FOE_BULLETS_PER_BURST
         self.landed = False
+        self.current_animation_model = 0
+
+    def next_animation_model(self):
+        self.current_animation_model += 1
+        self.current_animation_model %= 22
 
     def take_hit(self):
         self.foe_health -= 1
@@ -36,10 +42,13 @@ class Foe(Character):
             self.world.shoot(bullet_position, bullet_velocity)
 
     def change_image(self):
+
         if(self.foe_direct == bs.Direction.RIGHT):
-            self.image = Models.FOE_R_IMG
+            self.image = models_list[(1, self.current_animation_model)]
+            self.next_animation_model()
         else:
-            self.image = Models.FOE_L_IMG
+            self.image = models_list[(2, self.current_animation_model)]
+            self.next_animation_model()
 
     def reaches(self, hero_position):
         if(abs(hero_position.y - self.position.y) > CELL_SIZE*3/4):

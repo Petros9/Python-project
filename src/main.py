@@ -154,7 +154,7 @@ def main():
         first_level.shoot_towers()
         first_level.move_bullets()
         first_level.move_foes()
-        if(manfred.rect.x != old_position.x and manfred.rect.y == old_position.y):
+        if(manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
             if (manfred.direction is bs.Direction.RIGHT):
                 manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
                 manfred.next_animation_model()
