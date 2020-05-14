@@ -111,7 +111,7 @@ def main():
     boss_level = LevelLoader(LEVELS_PATH + "boss_level").load_level(
         level_objects_images)
 
-    level_list = [zero_level, boss_level, first_level, second_level]
+    level_list = [boss_level, zero_level, first_level, second_level] # zła kolejność, lepiej się testuje bossa
     level_counter = 0
     ahead_counter = 0
     timer = 0
@@ -266,7 +266,7 @@ def main():
         level_list[level_counter].bullets.draw(screen)
         level_list[level_counter].boss.draw(screen)
 
-        if(level_counter == 0 and intro_timer < 300):
+        if(level_counter == 1 and intro_timer < 300): # ma być 0
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
             print(intro_timer)
