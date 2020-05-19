@@ -145,13 +145,13 @@ def main():
                         ax = -HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_UP):
                         if (manfred.squat):
-                            manfred.change_squat_state()
+                            manfred.squat = not manfred.squat
                         else:
                             ay = -JUMP_ACCELERATION
                     if (event.key == pygame.K_DOWN and not manfred.jumping):
-                        if (manfred.squat and manfred.position.y < 400):
+                        if (manfred.squat):
                             manfred.dig()
-                        manfred.change_squat_state()
+                        manfred.squat = not manfred.squat
                     if (event.key == pygame.K_SPACE and not manfred.squat):
                         if (not DEBUG):
                             baron_shoot_sound.play()
@@ -184,6 +184,7 @@ def main():
 
         # Apply motions logic.
         if (manfred.squat):
+            manfred.velocity.x = 0
             ax = 0
             ay = 0
 

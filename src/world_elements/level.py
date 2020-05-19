@@ -46,8 +46,16 @@ class Level:
 
     def move_bullets(self):
         self.bullets.update()
+
         for hero in self.heroes:
-            if (pygame.sprite.spritecollide(hero, self.bullets, True)):
+            bullets_colliding = pygame.sprite.spritecollide(hero,
+                                                            self.bullets,
+                                                            False)
+            for bullet in bullets_colliding:
+                if (hero.squat and
+                        bullet.rect.y < hero.position.y + 0.3 * CELL_SIZE):
+                    continue
+                self.bullets.remove(bullet)
                 hero.take_hit()
 
             if (hero.health == 0):
