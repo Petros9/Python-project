@@ -118,7 +118,7 @@ def main():
     level_list = [zero_level, first_level,
                   second_level, boss_level]
     level_counter = 0
-    ahead_counter = 0
+    level_change_indicator = False
     timer = 0
     manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
 
@@ -129,9 +129,10 @@ def main():
     manfred_animations_model = AnimationModels()
     intro_timer = 0
     while (True):
-        if (ahead_counter != level_counter and timer == 0):
+        if (level_change_indicator is True and timer == 0):
             level_counter += 1
             manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
+            level_change_indicator = False
         if (timer > 0):
             timer -= 1
         ay = 0
@@ -168,8 +169,9 @@ def main():
                     manfred.die()
                 if (DEBUG and event.key == pygame.K_p):
                     pause = not pause
-                if (DEBUG and ""):
-                    pass
+                if (DEBUG and event.key == pygame.K_k):
+                    level_change_indicator = True
+
         if (DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
                                                      LIGHT_GREEN)
@@ -207,7 +209,7 @@ def main():
             if (not flag.captured):
                 flag.image = Models.BARON_FLAG_IMG
                 flag.captured = True
-                ahead_counter += 1
+                level_change_indicator = True
                 timer = IMMORTALITY_TIME
 
         level_list[level_counter].shoot_towers()
@@ -275,11 +277,12 @@ def main():
         level_list[level_counter].bullets.draw(screen)
         level_list[level_counter].boss.draw(screen)
 
-        if (level_counter == 0 and intro_timer < 300):  # ma być 0
+        if (level_counter == 0 and intro_timer < 300):
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
             print(intro_timer)
 
+        # Adjust moving characters to make them move to the left realistically
         manfred.adjust_visual()
         for foe in level_list[level_counter].foes:
             foe.adjust_visual()
