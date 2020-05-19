@@ -1,11 +1,6 @@
-import pygame
-
-from basic import Point
-from character import Character
 import basic as bs
-from models import Models
+from character import Character
 from settings import *
-from settings import HORIZONTAL_ACCELERATION, IMMORTALITY_TIME, FOE_BULLETS_PER_BURST, CELL_SIZE, FOE_RANGE
 
 
 class Boss(Character):

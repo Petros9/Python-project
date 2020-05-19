@@ -7,7 +7,7 @@ import basic as bs
 from models import Models
 from level_loader import LevelLoader
 from settings import *
-from animations.baron_moving_animations import Animation_models
+from animations.baron_moving_animations import AnimationModels
 
 
 def game_intro(screen):
@@ -27,7 +27,6 @@ def game_intro(screen):
     pygame.draw.rect(screen, RED, (510, 300, 100, 40))
     screen.blit(text2, (510, 300))
     pygame.display.update()
-
 
     # Intro logic
     while (intro):
@@ -57,23 +56,26 @@ def intro_level(screen, intro_timer, manfred):
         screen.blit(text1, (242, 160))
         screen.blit(text2, (242, 175))
 
-    elif(140 < intro_timer < 160):
+    elif (140 < intro_timer < 160):
         screen.blit(Models.COMPANION_DAM, (300, 200))
-    if(160> intro_timer > 110):
+    if (160 > intro_timer > 110):
         screen.blit(Models.FOE_L_IMG, (440, 200))
-        if(intro_timer < 140):
-            screen.blit(Models.BULLET_IMG, (440 + (110 - intro_timer)*4, 210))
+        if (intro_timer < 140):
+            screen.blit(Models.BULLET_IMG,
+                        (440 + (110 - intro_timer) * 4, 210))
 
-    if(intro_timer > 160):
-        if(intro_timer%2 == 0):
-            screen.blit(Models.FOE_L_IMG, (440, 200 + (160 - intro_timer)*4))
+    if (intro_timer > 160):
+        if (intro_timer % 2 == 0):
+            screen.blit(Models.FOE_L_IMG, (440, 200 + (160 - intro_timer) * 4))
         else:
-            screen.blit(Models.FOE_R_IMG, (440, 200 + (160 - intro_timer)*4))
+            screen.blit(Models.FOE_R_IMG, (440, 200 + (160 - intro_timer) * 4))
 
     text3 = font.render("Zemszczę się...", 1, BLACK)
-    if(intro_timer > 260):
-        pygame.draw.rect(screen, WHITE, (manfred.position.x - 80, manfred.position.y - 15, 80, 15))
+    if (intro_timer > 260):
+        pygame.draw.rect(screen, WHITE, (
+            manfred.position.x - 80, manfred.position.y - 15, 80, 15))
         screen.blit(text3, (manfred.position.x - 78, manfred.position.y - 13))
+
 
 def main():
     # Basics init.
@@ -88,7 +90,8 @@ def main():
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
     game_intro(screen)
-    pygame.mixer.music.load(SOUND_PATH + "theme.wav")
+    if (not DEBUG):
+        pygame.mixer.music.load(SOUND_PATH + "theme.wav")
     # Images for level loader.
     level_objects_images = {
         'platform': Models.PLATFORM_IMG,
@@ -100,7 +103,8 @@ def main():
     }
 
     # First level init.
-    zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(level_objects_images)
+    zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(
+        level_objects_images)
 
     first_level = LevelLoader(LEVELS_PATH + "first_level").load_level(
         level_objects_images)
@@ -111,7 +115,8 @@ def main():
     boss_level = LevelLoader(LEVELS_PATH + "boss_level").load_level(
         level_objects_images)
 
-    level_list = [boss_level, zero_level, first_level, second_level] # zła kolejność, lepiej się testuje bossa
+    level_list = [zero_level, first_level,
+                  second_level, boss_level]
     level_counter = 0
     ahead_counter = 0
     timer = 0
@@ -121,7 +126,7 @@ def main():
     pause = False
     ax = 0
     clock = pygame.time.Clock()
-    manfred_animations_model = Animation_models()
+    manfred_animations_model = AnimationModels()
     intro_timer = 0
     while (True):
         if (ahead_counter != level_counter and timer == 0):
@@ -153,7 +158,8 @@ def main():
                             manfred.dig()
                         manfred.change_squat_state()
                     if (event.key == pygame.K_SPACE and not manfred.squat):
-                        baron_shoot_sound.play()
+                        if (not DEBUG):
+                            baron_shoot_sound.play()
                         manfred.shoot()
                 if (event.key == pygame.K_ESCAPE):
                     pygame.quit()
@@ -162,6 +168,8 @@ def main():
                     manfred.die()
                 if (DEBUG and event.key == pygame.K_p):
                     pause = not pause
+                if (DEBUG and ""):
+                    pass
         if (DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
                                                      LIGHT_GREEN)
@@ -192,7 +200,9 @@ def main():
             level_list[level_counter].follow_hero(-hero_displacement.x)
 
         flags_in_touch = pygame.sprite.spritecollide(manfred,
-                                                     level_list[level_counter].flags, False)
+                                                     level_list[
+                                                         level_counter].flags,
+                                                     False)
         for flag in flags_in_touch:
             if (not flag.captured):
                 flag.image = Models.BARON_FLAG_IMG
@@ -204,12 +214,16 @@ def main():
         level_list[level_counter].move_bullets()
         level_list[level_counter].move_foes()
         level_list[level_counter].move_boss()
-        if (manfred.rect.x != old_position.x and manfred.rect.y == old_position.y and manfred.immortality_timer == 0):
+        if (manfred.rect.x != old_position.x and
+                manfred.rect.y == old_position.y and
+                manfred.immortality_timer == 0):
             if (manfred.direction is bs.Direction.RIGHT):
-                manfred.image = manfred_animations_model.models_list[(1, manfred.current_animation_model)]
+                manfred.image = manfred_animations_model.models_list[
+                    (1, manfred.current_animation_model)]
                 manfred.next_animation_model()
             else:
-                manfred.image = manfred_animations_model.models_list[(2, manfred.current_animation_model)]
+                manfred.image = manfred_animations_model.models_list[
+                    (2, manfred.current_animation_model)]
                 manfred.next_animation_model()
         else:
             manfred.current_animation_model = 0
@@ -266,7 +280,7 @@ def main():
         level_list[level_counter].bullets.draw(screen)
         level_list[level_counter].boss.draw(screen)
 
-        if(level_counter == 1 and intro_timer < 300): # ma być 0
+        if (level_counter == 0 and intro_timer < 300):  # ma być 0
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
             print(intro_timer)
@@ -288,6 +302,7 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
+
 
 if (__name__ == "__main__"):
     main()
