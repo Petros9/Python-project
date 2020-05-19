@@ -50,7 +50,8 @@ class LevelLoader:
                                             platforms[-1].rect.y)] = True
                         if (line[j] == '$'):
                             level.flags.add(
-                                [we.Flag(self.object_images['flag'], 0.5 * j, i)])
+                                [we.Flag(self.object_images['flag'],
+                                         0.5 * j, i)])
                         if (line[j] == '*'):
                             level.foes.add(
                                 [we.Foe(self.object_images['foe'], 0.5 * j, i,
