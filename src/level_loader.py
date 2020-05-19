@@ -31,7 +31,8 @@ class LevelLoader:
         level = we.Level(pygame.sprite.Group(), pygame.sprite.Group(),
                          pygame.sprite.Group(), pygame.sprite.Group(),
                          pygame.sprite.Group(), pygame.sprite.Group(),
-                         pygame.sprite.Group(), pygame.sprite.Group(), pygame.sprite.Group())
+                         pygame.sprite.Group(), pygame.sprite.Group(),
+                         pygame.sprite.Group())
 
         platforms = []
         platform_is_at = defaultdict(lambda: False)
@@ -58,8 +59,8 @@ class LevelLoader:
                                 [we.Tower(object_images['tower'], 0.5 * j, i)])
 
                         if (line[j] == '@'):
-                            level.boss.add(
-                                [we.Boss(object_images['boss'], 0.5 * j, i, level)])
+                            level.boss.add([we.Boss(object_images['boss'],
+                                                    0.5 * j, i, level)])
 
                         if (line[j] == '&'):
                             bridge = we.Bridge(object_images['bridge'],
@@ -77,9 +78,9 @@ class LevelLoader:
             return (platform_is_at[(plat.rect.x, plat.rect.y - CELL_SIZE)] or
                     platform_is_at[(plat.rect.x, plat.rect.y + CELL_SIZE)])
 
-        def has_horizontal_neighbors(plat):
-            return (platform_is_at[(plat.rect.x - CELL_SIZE, plat.rect.y)] or
-                    platform_is_at[(plat.rect.x + CELL_SIZE, plat.rect.y)])
+        # def has_horizontal_neighbors(plat):
+        #    return (platform_is_at[(plat.rect.x - CELL_SIZE, plat.rect.y)] or
+        #            platform_is_at[(plat.rect.x + CELL_SIZE, plat.rect.y)])
 
         def is_wall(plat):
             return (has_vertical_neighbors(plat) and

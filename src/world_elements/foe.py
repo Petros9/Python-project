@@ -1,11 +1,9 @@
-import pygame
-
+import basic as bs
+from animations.foe_moving_animation import models_list
 from basic import Point
 from character import Character
-import basic as bs
 from models import Models
-from animations.foe_moving_animation import models_list
-from settings import HORIZONTAL_ACCELERATION, IMMORTALITY_TIME, FOE_BULLETS_PER_BURST, CELL_SIZE, FOE_RANGE
+from settings import *
 
 
 class Foe(Character):
@@ -88,4 +86,3 @@ class Foe(Character):
             self.velocity.x = 0
             self.velocity.y = 0
             self.reverse_direction()
-
