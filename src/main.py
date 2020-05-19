@@ -102,21 +102,15 @@ def main():
         'boss': Models.COMPANION
     }
 
-    # First level init.
-    zero_level = LevelLoader(LEVELS_PATH + "intro_level").load_level(
-        level_objects_images)
+    # Levels init.
+    level_loader = LevelLoader(level_objects_images)
+    level_list = [
+        level_loader.load_level(LEVELS_PATH + "intro_level"),
+        level_loader.load_level(LEVELS_PATH + "first_level"),
+        level_loader.load_level(LEVELS_PATH + "second_level"),
+        level_loader.load_level(LEVELS_PATH + "boss_level"),
+    ]
 
-    first_level = LevelLoader(LEVELS_PATH + "first_level").load_level(
-        level_objects_images)
-
-    second_level = LevelLoader(LEVELS_PATH + "second_level").load_level(
-        level_objects_images)
-
-    boss_level = LevelLoader(LEVELS_PATH + "boss_level").load_level(
-        level_objects_images)
-
-    level_list = [zero_level, first_level,
-                  second_level, boss_level]
     level_counter = 0
     level_change_indicator = False
     timer = 0

@@ -10,18 +10,19 @@ class LevelLoader:
     """ Class handles input of level.
 
     Attributes:
-        filename(str): The name of input file.
+        object_images(dict): Dictionary with keys being names of some level
+                             objects f.e. 'foe' and images assigned to them.
 
     """
 
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, object_images):
+        self.object_images = object_images
 
-    def load_level(self, object_images):
+    def load_level(self, pathname):
         """ Load level from a file.
 
         Args:
-            object_images: Dictionary of images necessary to create a sprites.
+            pathname: Path to a file.
 
         Returns:
             Level: The Level object filled with contents of a level
@@ -38,32 +39,33 @@ class LevelLoader:
         platform_is_at = defaultdict(lambda: False)
 
         try:
-            with open(self.filename, 'r') as f:
+            with open(pathname, 'r') as f:
                 for i, line in enumerate(f):
                     for j in range(len(line)):
                         if (line[j] == '#'):
                             platforms += [
-                                we.Platform(object_images['platform'],
+                                we.Platform(self.object_images['platform'],
                                             0.5 * j, i)]
                             platform_is_at[(platforms[-1].rect.x,
                                             platforms[-1].rect.y)] = True
                         if (line[j] == '$'):
                             level.flags.add(
-                                [we.Flag(object_images['flag'], 0.5 * j, i)])
+                                [we.Flag(self.object_images['flag'], 0.5 * j, i)])
                         if (line[j] == '*'):
                             level.foes.add(
-                                [we.Foe(object_images['foe'], 0.5 * j, i,
+                                [we.Foe(self.object_images['foe'], 0.5 * j, i,
                                         level)])
                         if (line[j] == '^'):
                             level.towers.add(
-                                [we.Tower(object_images['tower'], 0.5 * j, i)])
+                                [we.Tower(self.object_images['tower'],
+                                          0.5 * j, i)])
 
                         if (line[j] == '@'):
-                            level.boss.add([we.Boss(object_images['boss'],
+                            level.boss.add([we.Boss(self.object_images['boss'],
                                                     0.5 * j, i, level)])
 
                         if (line[j] == '&'):
-                            bridge = we.Bridge(object_images['bridge'],
+                            bridge = we.Bridge(self.object_images['bridge'],
                                                0.5 * j, i)
                             level.bridges.add([bridge])
 
