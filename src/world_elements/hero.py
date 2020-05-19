@@ -24,9 +24,6 @@ class Hero(Character):
         self.current_animation_model += 1
         self.current_animation_model %= 22
 
-    def change_squat_state(self):
-        self.squat = not self.squat
-
     def shoot(self):
         if (self.direction is bs.Direction.RIGHT):
             bullet_position = Point(self.rect.x + CELL_SIZE/2,
@@ -47,8 +44,10 @@ class Hero(Character):
         self.immortality_timer = IMMORTALITY_TIME
 
     def dig(self):
-        self.rect.y += CELL_SIZE/2
-        self.position.y += CELL_SIZE/2
+        # Make dig only if it is guaranteed to not fall off the screen
+        if (self.position.y < SCREEN_HEIGHT - 2 * CELL_SIZE):
+            self.rect.y += CELL_SIZE/2
+            self.position.y += CELL_SIZE/2
 
     def update(self):
         # Check if character is not beyond screen
