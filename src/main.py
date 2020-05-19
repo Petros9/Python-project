@@ -1,5 +1,3 @@
-import sys
-
 import pygame
 
 import world_elements as we
@@ -136,9 +134,11 @@ def main():
                      event.key == pygame.K_RIGHT)):
                 ax = 0
             if (event.type == pygame.QUIT):
-                sys.exit(0)
+                pygame.quit()
+                exit()
             elif (event.type == pygame.KEYDOWN):
                 if (not pause):
+                    # Movement and action keys
                     if (event.key == pygame.K_RIGHT):
                         ax = HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_LEFT):
@@ -156,15 +156,18 @@ def main():
                         if (not DEBUG):
                             baron_shoot_sound.play()
                         manfred.shoot()
+
+                    # Functional keys
+                    if (event.key == pygame.K_0):
+                        manfred.die()
+                    if (DEBUG and event.key == pygame.K_k):
+                        level_change_indicator = True
+                # Actions independent on pause
                 if (event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     quit()
-                if (event.key == pygame.K_0):
-                    manfred.die()
                 if (DEBUG and event.key == pygame.K_p):
                     pause = not pause
-                if (DEBUG and event.key == pygame.K_k):
-                    level_change_indicator = True
 
         if (DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
@@ -210,6 +213,7 @@ def main():
         level_list[level_counter].move_bullets()
         level_list[level_counter].move_foes()
         level_list[level_counter].move_boss()
+
         if (manfred.rect.x != old_position.x and
                 manfred.rect.y == old_position.y and
                 manfred.immortality_timer == 0):
@@ -271,12 +275,12 @@ def main():
         level_list[level_counter].bullets.draw(screen)
         level_list[level_counter].boss.draw(screen)
 
+        # Draw intro cut scene.
         if (level_counter == 0 and intro_timer < 300):
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
-            print(intro_timer)
 
-        # Adjust moving characters to make them move to the left realistically
+        # Adjust moving characters to make them move to the left realistically.
         manfred.adjust_visual()
         for foe in level_list[level_counter].foes:
             foe.adjust_visual()
@@ -284,6 +288,7 @@ def main():
         level_list[level_counter].heroes.draw(screen)
         level_list[level_counter].foes.draw(screen)
 
+        # Draw hp.
         hero_health = manfred.health
         while (hero_health > 0):
             screen.blit(Models.HEART_IMG, (hero_health * 45, 40))

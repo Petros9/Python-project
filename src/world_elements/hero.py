@@ -62,7 +62,7 @@ class Hero(Character):
 
         if(self.immortality_timer > 0):
             self.immortality_timer -= 1
-        # Check if hero is not going out of the level terrain.
+        # Check if hero is not going off the screen.
         if (self.rect.x < 0):
             self.rect.x = 0
             self.position.x = 0
