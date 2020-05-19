@@ -68,6 +68,13 @@ class Level:
             if (foe.foe_health == 0):
                 self.foes.remove(foe)
 
+        def inside_screen_area(current_bullet):
+            return 2 * SCREEN_WIDTH > current_bullet.rect.x > -SCREEN_WIDTH or\
+                   2 * SCREEN_HEIGHT > current_bullet.rect.y > -SCREEN_HEIGHT
+
+        self.bullets = pygame.sprite.Group(filter(inside_screen_area,
+                                                  self.bullets))
+
     def move_foes(self):
         for hero in self.heroes:
             if (pygame.sprite.spritecollide(hero, self.foes, False)):

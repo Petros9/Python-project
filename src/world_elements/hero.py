@@ -25,16 +25,17 @@ class Hero(Character):
         self.current_animation_model %= 22
 
     def shoot(self):
+        # Values of the adjustment of the CELL_SIZE are chosen, so that
+        # shooting looks plausible - that is the only determinant.
         if (self.direction is bs.Direction.RIGHT):
-            bullet_position = Point(self.rect.x + CELL_SIZE/2,
-                                    self.rect.y + CELL_SIZE/4)
-            bullet_velocity = Point(CELL_SIZE/8 * 3, 0)
-            self.level.shoot(bullet_position, bullet_velocity)
+            bullet_position = Point(self.rect.x + 0.8 * CELL_SIZE,
+                                    self.rect.y + 0.25 * CELL_SIZE)
+            bullet_velocity = Point(0.375 * CELL_SIZE, 0)
         else:
-            bullet_position = Point(self.rect.x + - CELL_SIZE/2,
-                                    self.rect.y + CELL_SIZE/4)
-            bullet_velocity = Point(-CELL_SIZE/8 * 3, 0)
-            self.level.shoot(bullet_position, bullet_velocity)
+            bullet_position = Point(self.rect.x,
+                                    self.rect.y + 0.25 * CELL_SIZE)
+            bullet_velocity = Point(-0.375 * CELL_SIZE, 0)
+        self.level.shoot(bullet_position, bullet_velocity)
 
     def die(self):
         self.health = HERO_HEALTH
