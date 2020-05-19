@@ -217,14 +217,9 @@ def main():
         if (manfred.rect.x != old_position.x and
                 manfred.rect.y == old_position.y and
                 manfred.immortality_timer == 0):
-            if (manfred.direction is bs.Direction.RIGHT):
-                manfred.image = manfred_animations_model.models_list[
-                    (1, manfred.current_animation_model)]
-                manfred.next_animation_model()
-            else:
-                manfred.image = manfred_animations_model.models_list[
-                    (2, manfred.current_animation_model)]
-                manfred.next_animation_model()
+            manfred.image = manfred_animations_model.models_list[
+                (manfred.direction, manfred.current_animation_model)]
+            manfred.next_animation_model()
         else:
             manfred.current_animation_model = 0
             if (manfred.direction is bs.Direction.RIGHT):
