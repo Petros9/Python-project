@@ -176,8 +176,8 @@ def main():
             text = pygame.font.Font(None, 60).render("Pause", True,
                                                      LIGHT_GREEN)
             text_rect = text.get_rect()
-            text_x = screen.get_width() / 2 - text_rect.width / 2
-            text_y = screen.get_height() / 2 - text_rect.height / 2
+            text_x = SCREEN_WIDTH / 2 - text_rect.width / 2
+            text_y = SCREEN_HEIGHT / 2 - text_rect.height / 2
             screen.blit(text, [text_x, text_y])
             pygame.display.set_caption("Pause")
             pygame.display.flip()
