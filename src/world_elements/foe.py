@@ -41,12 +41,9 @@ class Foe(Character):
 
     def change_image(self):
 
-        if(self.foe_direct == bs.Direction.RIGHT):
-            self.image = models_list[(1, self.current_animation_model)]
-            self.next_animation_model()
-        else:
-            self.image = models_list[(2, self.current_animation_model)]
-            self.next_animation_model()
+        self.image = models_list[(self.foe_direct,
+                                  self.current_animation_model)]
+        self.next_animation_model()
 
     def reaches(self, hero_position):
         if(abs(hero_position.y - self.position.y) > CELL_SIZE*3/4):
