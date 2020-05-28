@@ -38,6 +38,7 @@ class Level:
         self.bullets = pygame.sprite.Group()
         self.foe_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "foe.wav")
         self.bosses = bosses
+        self.end_game = False
 
     def shoot(self, start_position, velocity):
         self.foe_shoot_sound.play()
@@ -67,6 +68,13 @@ class Level:
 
             if (foe.foe_health == 0):
                 self.foes.remove(foe)
+
+        for boss in self.bosses:
+            if (pygame.sprite.spritecollide(boss, self.bullets, True)):
+                boss.take_hit()
+            if (boss.boss_health == 0):
+                self.bosses.remove(boss)
+                self.end_game = True
 
         def inside_screen_area(current_bullet):
             return 2 * SCREEN_WIDTH > current_bullet.rect.x > -SCREEN_WIDTH or\
@@ -115,9 +123,31 @@ class Level:
                 tower.reload_timer -= 1
 
     def move_boss(self):
+        for hero in self.heroes:
+            if (pygame.sprite.spritecollide(hero, self.bosses, False)):
+                hero.take_hit()
+            if (hero.health == 0):
+                hero.die()
         for boss in self.bosses:
+            print(boss.boss_health)
+            print(boss.position.y)
+            if (not 500 > boss.position.y > 0):
+                self.bosses.remove(boss)
+                self.end_game = True
+
+            if (boss.immortality_timer > 0):
+                boss.immortality_timer -= 1
+            else:
+                boss.change_image()
             if (boss.ground_detector.is_on_ground()):
                 boss.jump()
+            if (boss.reload_timer == 0):
+                boss.reload_timer = TOWER_RELOAD_TIME
+                self.shoot(Point(boss.rect.x + 15, boss.rect.y + 50),
+                               Point(0, 30))
+                boss.reload_timer = 2
+            else:
+                boss.reload_timer -= 1
 
     def follow_hero(self, dx):
         """ Move objects to make the camera follow the hero.

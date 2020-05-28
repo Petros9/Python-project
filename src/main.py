@@ -49,13 +49,13 @@ def intro_level(screen, intro_timer, manfred):
     text1 = font.render("Kapitanie! Zaatakowały", 1, BLACK)
     text2 = font.render("nas straszne gorgole! AAAAA", 1, BLACK)
     if (intro_timer < 140):
-        screen.blit(Models.COMPANION, (300, 200))
+        screen.blit(Models.COMPANION_L, (300, 200))
         pygame.draw.rect(screen, WHITE, (240, 160, 150, 30))
         screen.blit(text1, (242, 160))
         screen.blit(text2, (242, 175))
 
     elif (140 < intro_timer < 160):
-        screen.blit(Models.COMPANION_DAM, (300, 200))
+        screen.blit(Models.COMPANION_L_DAM, (300, 200))
     if (160 > intro_timer > 110):
         screen.blit(Models.FOE_L_IMG, (440, 200))
         if (intro_timer < 140):
@@ -74,6 +74,38 @@ def intro_level(screen, intro_timer, manfred):
             manfred.position.x - 80, manfred.position.y - 15, 80, 15))
         screen.blit(text3, (manfred.position.x - 78, manfred.position.y - 13))
 
+def end_level(screen, bosses):
+    font = pygame.font.SysFont("ComicSans", 15)
+    text = font.render("Niespodzianka!", 1, BLACK)
+    for boss in bosses:
+        boss.take_hit()
+        pygame.draw.rect(screen, WHITE, (boss.position.x - 80, boss.position.y - 15, 80, 15))
+        screen.blit(text, (boss.position.x - 78, boss.position.y - 13))
+
+def end_game(screen):
+    screen.fill(BLACK)
+    font = pygame.font.SysFont("ComicSans", 60)
+    text1 = font.render("Golgors are gone!", 1, BLACK)
+    text2 = font.render("Quit", 1, BLACK)
+
+    pygame.draw.rect(screen, WHITE, (250, 100, 360, 40))
+    screen.blit(text1, (250, 100))
+
+    pygame.draw.rect(screen, RED, (410, 300, 100, 40))
+    screen.blit(text2, (410, 300))
+    pygame.display.update()
+
+    # End logic
+    while (True):
+        for event in pygame.event.get():
+            pos = pygame.mouse.get_pos()
+            if (event.type == pygame.QUIT):
+                pygame.quit()
+                quit()
+            if (event.type == pygame.MOUSEBUTTONDOWN):
+                if (510 < pos[0] < 610 and 300 < pos[1] < 340):
+                    pygame.quit()
+                    quit()
 
 def main():
     # Basics init.
@@ -97,7 +129,7 @@ def main():
         'foe': Models.FOE_L_IMG,
         'tower': Models.TOWER_IMG,
         'bridge': Models.BRIDGE_IMG,
-        'boss': Models.COMPANION
+        'boss': Models.COMPANION_L
     }
 
     # Levels init.
@@ -120,6 +152,7 @@ def main():
     clock = pygame.time.Clock()
     manfred_animations_model = AnimationModels()
     intro_timer = 0
+    end_timer = 0
     while (True):
         if (level_change_indicator is True and timer == 0):
             level_counter += 1
@@ -282,6 +315,11 @@ def main():
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
 
+        elif(level_counter == 3 and end_timer < 100):
+            end_level(screen, level_list[level_counter].bosses)
+            end_timer += 1
+        if level_list[level_counter].end_game:
+            end_game(screen)
         # Adjust moving characters to make them move to the left realistically.
         manfred.adjust_visual()
         for foe in level_list[level_counter].foes:
@@ -301,7 +339,6 @@ def main():
 
         pygame.display.flip()
         clock.tick(FPS)
-
 
 if (__name__ == "__main__"):
     main()
