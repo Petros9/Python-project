@@ -24,7 +24,7 @@ class Level:
     """
 
     def __init__(self, all_platforms, floors, walls, corners, foes, towers,
-                 bridges, flags, boss, heroes=None, spawn=None):
+                 bridges, flags, bosses, heroes=None, spawn=None):
         self.spawn = spawn if (spawn) else we.Spawn()
         self.all_platforms = all_platforms
         self.floors = floors
@@ -37,7 +37,7 @@ class Level:
         self.heroes = heroes if (heroes) else pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
         self.foe_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "foe.wav")
-        self.boss = boss
+        self.bosses = bosses
 
     def shoot(self, start_position, velocity):
         self.foe_shoot_sound.play()
@@ -115,8 +115,8 @@ class Level:
                 tower.reload_timer -= 1
 
     def move_boss(self):
-        for boss in self.boss:
-            if (boss.position.y == 440):
+        for boss in self.bosses:
+            if (boss.ground_detector.is_on_ground()):
                 boss.jump()
 
     def follow_hero(self, dx):

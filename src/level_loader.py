@@ -62,8 +62,9 @@ class LevelLoader:
                                           0.5 * j, i)])
 
                         if (line[j] == '@'):
-                            level.boss.add([we.Boss(self.object_images['boss'],
-                                                    0.5 * j, i, level)])
+                            level.bosses.add([we.Boss(
+                                self.object_images['boss'],
+                                0.5 * j, i, level)])
 
                         if (line[j] == '&'):
                             bridge = we.Bridge(self.object_images['bridge'],
