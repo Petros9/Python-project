@@ -82,8 +82,8 @@ def main():
     pygame.mixer.init()
 
     baron_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "baron_shoot.wav")
-    if (not DEBUG):
-        pygame.mixer.music.play(-1)
+    #if (not DEBUG):
+    #    pygame.mixer.music.play(-1)
 
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 
@@ -193,6 +193,7 @@ def main():
         manfred.accelerate(ax, ay)
         hero_displacement = manfred.update()
         level_list[level_counter].foes.update()
+        level_list[level_counter].bosses.update()
 
         # Make screen following the hero if his velocity is significant.
         if (manfred.rect.centerx > 0.5 * SCREEN_WIDTH and
@@ -274,7 +275,7 @@ def main():
         level_list[level_counter].bridges.draw(screen)
         level_list[level_counter].towers.draw(screen)
         level_list[level_counter].bullets.draw(screen)
-        level_list[level_counter].boss.draw(screen)
+        level_list[level_counter].bosses.draw(screen)
 
         # Draw intro cut scene.
         if (level_counter == 0 and intro_timer < 300):
