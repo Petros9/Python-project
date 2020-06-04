@@ -93,16 +93,16 @@ def end_game(screen):
     pygame.draw.rect(screen, RED, (410, 300, 100, 40))
     screen.blit(text2, (410, 300))
     pygame.display.update()
-
     # End logic
     while (True):
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
+
             if (event.type == pygame.QUIT):
                 pygame.quit()
                 quit()
             if (event.type == pygame.MOUSEBUTTONDOWN):
-                if (410 < pos[0] < 510 and 100 < pos[1] < 40):
+                if (410 < pos[0] < 510 and 300 < pos[1] < 340):
                     pygame.quit()
                     quit()
 
@@ -149,7 +149,6 @@ def main():
     pause = False
     ax = 0
     clock = pygame.time.Clock()
-    manfred_animations_model = models_dict
     intro_timer = 0
     end_timer = 0
     while (True):
