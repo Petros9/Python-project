@@ -1,5 +1,5 @@
 import basic as bs
-from animations.foe_moving_animation import models_list
+from animations.foe_moving_animation import models_dict
 from basic import Point
 from character import Character
 from models import Models
@@ -39,7 +39,7 @@ class Foe(Character):
 
     def change_image(self):
 
-        self.image = models_list[(self.direction,
+        self.image = models_dict[(self.direction,
                                   self.current_animation_model)]
         self.next_animation_model()
 

@@ -2,7 +2,7 @@ from models import Models
 from basic.direction import Direction
 
 
-models_list = {(Direction.RIGHT, 0): Models.FR_1,
+models_dict = {(Direction.RIGHT, 0): Models.FR_1,
                (Direction.RIGHT, 1): Models.FR_2,
                (Direction.RIGHT, 2): Models.FR_3,
                (Direction.RIGHT, 3): Models.FR_4,

@@ -5,7 +5,7 @@ import basic as bs
 from models import Models
 from level_loader import LevelLoader
 from settings import *
-from animations.baron_moving_animations import AnimationModels
+from animations.baron_moving_animations import models_dict
 
 
 def game_intro(screen):
@@ -149,7 +149,7 @@ def main():
     pause = False
     ax = 0
     clock = pygame.time.Clock()
-    manfred_animations_model = AnimationModels()
+    manfred_animations_model = models_dict
     intro_timer = 0
     end_timer = 0
     while (True):
@@ -251,7 +251,7 @@ def main():
         if (manfred.rect.x != old_position.x and
                 manfred.rect.y == old_position.y and
                 manfred.immortality_timer == 0):
-            manfred.image = manfred_animations_model.models_list[
+            manfred.image = models_dict[
                 (manfred.direction, manfred.current_animation_model)]
             manfred.next_animation_model()
         else:
