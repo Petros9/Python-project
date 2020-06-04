@@ -78,7 +78,6 @@ def end_level(screen, bosses):
     font = pygame.font.SysFont("ComicSans", 15)
     text = font.render("Niespodzianka!", 1, BLACK)
     for boss in bosses:
-        boss.take_hit()
         pygame.draw.rect(screen, WHITE, (boss.position.x - 80, boss.position.y - 15, 80, 15))
         screen.blit(text, (boss.position.x - 78, boss.position.y - 13))
 
@@ -103,7 +102,7 @@ def end_game(screen):
                 pygame.quit()
                 quit()
             if (event.type == pygame.MOUSEBUTTONDOWN):
-                if (510 < pos[0] < 610 and 300 < pos[1] < 340):
+                if (410 < pos[0] < 510 and 100 < pos[1] < 40):
                     pygame.quit()
                     quit()
 
