@@ -1,4 +1,4 @@
-from static_object import StaticObject
+from world_elements.static_objects.static_object import StaticObject
 from basic import Point
 
 

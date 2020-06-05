@@ -1,7 +1,8 @@
 from basic import Point
-from character import Character
+import world_elements as we
+from world_elements.moving_objects.character import Character
 import basic as bs
-from settings import *
+from settings_and_data.settings import *
 
 
 class Hero(Character):
@@ -47,8 +48,8 @@ class Hero(Character):
     def dig(self):
         # Make dig only if it is guaranteed to not fall off the screen
         if (self.position.y < SCREEN_HEIGHT - 2 * CELL_SIZE):
-            self.rect.y += CELL_SIZE/2
-            self.position.y += CELL_SIZE/2
+            self.rect.y += CELL_SIZE / 2
+            self.position.y += CELL_SIZE / 2
 
     def update(self):
         # Check if character is not beyond screen
@@ -60,7 +61,15 @@ class Hero(Character):
         else:
             self.jumping = True
 
-        if(self.immortality_timer > 0):
+        if (old_position.y == self.position.y):
+            bridges = filter(lambda p: isinstance(p, we.Bridge),
+                             self.ground_detector.ground_sprites())
+
+            for bridge in bridges:
+                if (bridge.timer < 0):
+                    bridge.timer = BRIDGE_DESTRUCTION_TIME
+
+        if (self.immortality_timer > 0):
             self.immortality_timer -= 1
         # Check if hero is not going off the screen.
         if (self.rect.x < 0):

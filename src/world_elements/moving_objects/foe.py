@@ -1,9 +1,9 @@
 import basic as bs
-from animations.foe_moving_animation import models_dict
+import animations as ani
 from basic import Point
-from character import Character
-from models import Models
-from settings import *
+from world_elements.moving_objects.character import Character
+from settings_and_data.models_and_sounds import ModelsAndSounds
+from settings_and_data.settings import *
 
 
 class Foe(Character):
@@ -22,10 +22,10 @@ class Foe(Character):
     def take_hit(self):
         self.foe_health -= 1
         self.immortality_timer = IMMORTALITY_TIME
-        if(self.direction == bs.Direction.LEFT):
-            self.image = Models.FOE_L_DAM_IMG
+        if (self.direction == bs.Direction.LEFT):
+            self.image = ModelsAndSounds.FOE_L_DAM_IMG
         else:
-            self.image = Models.FOE_R_DAM_IMG
+            self.image = ModelsAndSounds.FOE_R_DAM_IMG
 
     def shoot(self):
         if (self.direction == bs.Direction.RIGHT):
@@ -39,12 +39,13 @@ class Foe(Character):
 
     def change_image(self):
 
-        self.image = models_dict[(self.direction,
-                                  self.current_animation_model)]
+        self.image = ani.MovingAnimations.FOE_MOVING_ANIMATION[
+            (self.direction,
+             self.current_animation_model)]
         self.next_animation_model()
 
     def reaches(self, hero_position):
-        if (abs(hero_position.y - self.position.y) > CELL_SIZE*3/4):
+        if (abs(hero_position.y - self.position.y) > CELL_SIZE * 3 / 4):
             return False
         else:
             if (self.direction == bs.Direction.LEFT):
@@ -66,7 +67,7 @@ class Foe(Character):
 
         else:
             x_direction = 1
-        self.accelerate(x_direction*HORIZONTAL_ACCELERATION/2, 0)
+        self.accelerate(x_direction * HORIZONTAL_ACCELERATION / 2, 0)
 
         super().update()
 

@@ -1,17 +1,19 @@
 # noinspection PyUnresolvedReferences
 from pygame.image import load
+from pygame import mixer
+from dataclasses import dataclass
+from settings_and_data.settings import *
 
-from settings import *
 
-
-class Models:
+@dataclass
+class ModelsAndSounds:
     try:
         BARON_R_IMG = load(IMAGE_PATH + "baron_r.png")
         BARON_L_IMG = load(IMAGE_PATH + "baron_l.png")
         BARON_L_SQUAT_IMG = load(IMAGE_PATH + "baron_l_squat.png")
         BARON_R_SQUAT_IMG = load(IMAGE_PATH + "baron_r_squat.png")
-        BARON_R_DAM_IMG = load(IMAGE_PATH+"baron_dam_r.png")
-        BARON_L_DAM_IMG = load(IMAGE_PATH+"baron_dam_l.png")
+        BARON_R_DAM_IMG = load(IMAGE_PATH + "baron_dam_r.png")
+        BARON_L_DAM_IMG = load(IMAGE_PATH + "baron_dam_l.png")
         BARON_L_JUMPING_IMG = load(IMAGE_PATH + "baron_l_jumping.png")
         BARON_R_JUMPING_IMG = load(IMAGE_PATH + "baron_r_jumping.png")
         BARON_L_DAM_JUMPING_IMG = load(IMAGE_PATH + "baron_dam_l_jumping.png")
@@ -131,6 +133,14 @@ class Models:
         FL_20 = load(FOE_LEFT_ANIMATION_PATH + "20_l.png")
         FL_21 = load(FOE_LEFT_ANIMATION_PATH + "21_l.png")
         FL_22 = load(FOE_LEFT_ANIMATION_PATH + "22_l.png")
+
+        # Title image
+        TITLE = load(IMAGE_PATH + "title.png")
+
+        # Sounds
+        mixer.init()
+        BARON_SHOOT_SOUND = mixer.Sound(SOUND_PATH + "baron_shoot.wav")
+        FOE_SHOOT_SOUND = mixer.Sound(SOUND_PATH + "foe.wav")
 
     except IOError as er:
         print("I/O error in loading models: " + er.strerror)

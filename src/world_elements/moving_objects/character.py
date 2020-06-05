@@ -1,7 +1,7 @@
 import pygame
 
 import basic as bs
-from settings import *
+from settings_and_data.settings import *
 
 
 class Character(pygame.sprite.Sprite):
@@ -83,10 +83,11 @@ class Character(pygame.sprite.Sprite):
         # Complexity is constant, because the character is allowed to
         # have only 8 neighboring sprites being platform or bridge.
         # In practise there is up to 3 (or 4) collisions possible.
-        collisions = \
-            pygame.sprite.spritecollide(self, self.world.floors, False) + \
-            pygame.sprite.spritecollide(self, self.world.corners, False) + \
-            pygame.sprite.spritecollide(self, self.world.bridges, False)
+        collisions = (
+                pygame.sprite.spritecollide(self, self.world.floors, False) +
+                pygame.sprite.spritecollide(self, self.world.corners, False) +
+                pygame.sprite.spritecollide(self, self.world.bridges, False)
+        )
         
         ground_collisions = self.ground_detector.ground_sprites()
 
@@ -97,9 +98,10 @@ class Character(pygame.sprite.Sprite):
                 self.velocity.y = 0
 
         # Check collisions with walls - horizontal ones
-        collisions = \
-            pygame.sprite.spritecollide(self, self.world.walls, False) + \
-            pygame.sprite.spritecollide(self, self.world.corners, False)
+        collisions = (
+                pygame.sprite.spritecollide(self, self.world.walls, False) +
+                pygame.sprite.spritecollide(self, self.world.corners, False)
+        )
 
         for collision in collisions:
             if (collision.rect.centerx > self.rect.centerx):
@@ -188,9 +190,9 @@ class GroundDetector(pygame.sprite.Sprite):
         Returns:
             list: All sprites, with which GroundDetector collides.
         """
-        return pygame.sprite.spritecollide(self, self.world.floors, False) + \
-            pygame.sprite.spritecollide(self, self.world.corners, False) + \
-            pygame.sprite.spritecollide(self, self.world.bridges, False)
+        return (pygame.sprite.spritecollide(self, self.world.floors, False) +
+                pygame.sprite.spritecollide(self, self.world.corners, False) +
+                pygame.sprite.spritecollide(self, self.world.bridges, False))
 
     def update(self, rect):
         self.rect.x = rect.x

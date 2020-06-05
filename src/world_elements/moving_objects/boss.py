@@ -1,7 +1,6 @@
 import basic as bs
-from character import Character
-from settings import *
-from src.models import *
+from world_elements.moving_objects.character import Character
+from settings_and_data.models_and_sounds import *
 
 
 class Boss(Character):
@@ -29,14 +28,14 @@ class Boss(Character):
         self.boss_health -= 1
         self.immortality_timer = IMMORTALITY_TIME
         if(self.boss_direct == bs.Direction.RIGHT):
-            self.image = Models.COMPANION_R_DAM
+            self.image = ModelsAndSounds.COMPANION_R_DAM
         else:
-            self.image = Models.COMPANION_L_DAM
+            self.image = ModelsAndSounds.COMPANION_L_DAM
 
     def change_image(self):
         if(self.boss_direct == bs.Direction.RIGHT):
-            self.image = Models.COMPANION_R_JUMPING
+            self.image = ModelsAndSounds.COMPANION_R_JUMPING
         else:
-            self.image = Models.COMPANION_L_JUMPING
+            self.image = ModelsAndSounds.COMPANION_L_JUMPING
 
 

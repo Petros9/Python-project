@@ -2,25 +2,12 @@ import pygame
 
 import world_elements as we
 from basic.point import Point
-from models import Models
-from settings import *
+from settings_and_data.models_and_sounds import ModelsAndSounds
+from settings_and_data.settings import *
 
 
 class Level:
-    """
-
-    Attributes:
-        spawn:
-        all_platforms:
-        floors:
-        walls:
-        corners:
-        foes:
-        towers:
-        bridges:
-        flags:
-        heroes:
-        bullets:
+    """ Level and its whole functionality.
     """
 
     def __init__(self, all_platforms, floors, walls, corners, foes, towers,
@@ -36,13 +23,12 @@ class Level:
         self.flags = flags
         self.heroes = heroes if (heroes) else pygame.sprite.Group()
         self.bullets = pygame.sprite.Group()
-        self.foe_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "foe.wav")
         self.bosses = bosses
         self.end_game = False
 
     def shoot(self, start_position, velocity):
-        self.foe_shoot_sound.play()
-        self.bullets.add(we.Bullet(Models.BULLET_IMG, start_position,
+        ModelsAndSounds.FOE_SHOOT_SOUND.play()
+        self.bullets.add(we.Bullet(ModelsAndSounds.BULLET_IMG, start_position,
                                    velocity))
 
     def move_bullets(self):
@@ -77,8 +63,8 @@ class Level:
                 self.end_game = True
 
         def inside_screen_area(current_bullet):
-            return 2 * SCREEN_WIDTH > current_bullet.rect.x > -SCREEN_WIDTH or\
-                   2 * SCREEN_HEIGHT > current_bullet.rect.y > -SCREEN_HEIGHT
+            return (2 * SCREEN_WIDTH > current_bullet.rect.x > -SCREEN_WIDTH or
+                    2 * SCREEN_HEIGHT > current_bullet.rect.y > -SCREEN_HEIGHT)
 
         self.bullets = pygame.sprite.Group(filter(inside_screen_area,
                                                   self.bullets))
@@ -144,7 +130,7 @@ class Level:
             if (boss.reload_timer == 0):
                 boss.reload_timer = TOWER_RELOAD_TIME
                 self.shoot(Point(boss.rect.x + 15, boss.rect.y + 50),
-                               Point(0, 30))
+                           Point(0, 30))
                 boss.reload_timer = 2
             else:
                 boss.reload_timer -= 1
@@ -166,3 +152,14 @@ class Level:
 
         for foe in self.foes:
             foe.position += Point(dx, 0)
+
+    def update_bridges_statuses(self):
+        bridges_alive = []
+
+        for bridge in self.bridges:
+            if (bridge.timer > 0):
+                bridge.timer -= 1
+            if (bridge.timer != 0):
+                bridges_alive += [bridge]
+
+        self.bridges = pygame.sprite.Group(bridges_alive)

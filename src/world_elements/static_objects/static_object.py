@@ -1,6 +1,6 @@
 import pygame
 
-from settings import *
+from settings_and_data.settings import *
 
 
 class StaticObject(pygame.sprite.Sprite):

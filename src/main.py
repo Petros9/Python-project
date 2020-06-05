@@ -2,27 +2,26 @@ import pygame
 
 import world_elements as we
 import basic as bs
-from models import Models
-from level_loader import LevelLoader
-from settings import *
-from animations.baron_moving_animations import models_dict
+from level import LevelLoader
+import settings_and_data as sd
+import animations as ani
 
 
 def game_intro(screen):
     intro = True
-    title = pygame.image.load(IMAGE_PATH + "title.png")
+    title = sd.ModelsAndSounds.TITLE
 
     # Visual intro
     screen.blit(title, (250, 0))
 
     font = pygame.font.SysFont("ComicSans", 60)
-    text1 = font.render("Start", 1, BLACK)
-    text2 = font.render("Quit", 1, BLACK)
+    text1 = font.render("Start", 1, sd.BLACK)
+    text2 = font.render("Quit", 1, sd.BLACK)
 
-    pygame.draw.rect(screen, LIGHT_GREEN, (290, 300, 100, 40))
+    pygame.draw.rect(screen, sd.LIGHT_GREEN, (290, 300, 100, 40))
     screen.blit(text1, (290, 300))
 
-    pygame.draw.rect(screen, RED, (510, 300, 100, 40))
+    pygame.draw.rect(screen, sd.RED, (510, 300, 100, 40))
     screen.blit(text2, (510, 300))
     pygame.display.update()
 
@@ -46,54 +45,61 @@ def game_intro(screen):
 
 def intro_level(screen, intro_timer, manfred):
     font = pygame.font.SysFont("ComicSans", 15)
-    text1 = font.render("Kapitanie! Zaatakowały", 1, BLACK)
-    text2 = font.render("nas straszne gorgole! AAAAA", 1, BLACK)
+    text1 = font.render("Kapitanie! Zaatakowały", 1, sd.BLACK)
+    text2 = font.render("nas straszne gorgole! AAAAA", 1, sd.BLACK)
     if (intro_timer < 140):
-        screen.blit(Models.COMPANION_L, (300, 200))
-        pygame.draw.rect(screen, WHITE, (240, 160, 150, 30))
+        screen.blit(sd.ModelsAndSounds.COMPANION_L, (300, 200))
+        pygame.draw.rect(screen, sd.WHITE, (240, 160, 150, 30))
         screen.blit(text1, (242, 160))
         screen.blit(text2, (242, 175))
 
     elif (140 < intro_timer < 160):
-        screen.blit(Models.COMPANION_L_DAM, (300, 200))
+        screen.blit(sd.ModelsAndSounds.COMPANION_L_DAM, (300, 200))
     if (160 > intro_timer > 110):
-        screen.blit(Models.FOE_L_IMG, (440, 200))
+        screen.blit(sd.ModelsAndSounds.FOE_L_IMG, (440, 200))
         if (intro_timer < 140):
-            screen.blit(Models.BULLET_IMG,
+            screen.blit(sd.ModelsAndSounds.BULLET_IMG,
                         (440 + (110 - intro_timer) * 4, 210))
 
     if (intro_timer > 160):
+        screen.blit(sd.ModelsAndSounds.FOE_L_IMG,
+                    (440, 200 + (160 - intro_timer) * 4))
         if (intro_timer % 2 == 0):
-            screen.blit(Models.FOE_L_IMG, (440, 200 + (160 - intro_timer) * 4))
+            screen.blit(sd.ModelsAndSounds.FOE_R_IMG,
+                        (440, 200 + 4 * (160 - intro_timer)))
         else:
-            screen.blit(Models.FOE_R_IMG, (440, 200 + (160 - intro_timer) * 4))
+            pass
 
-    text3 = font.render("Zemszczę się...", 1, BLACK)
+    text3 = font.render("Zemszczę się...", 1, sd.BLACK)
     if (intro_timer > 260):
-        pygame.draw.rect(screen, WHITE, (
+        pygame.draw.rect(screen, sd.WHITE, (
             manfred.position.x - 80, manfred.position.y - 15, 80, 15))
         screen.blit(text3, (manfred.position.x - 78, manfred.position.y - 13))
 
+
 def end_level(screen, bosses):
     font = pygame.font.SysFont("ComicSans", 15)
-    text = font.render("Niespodzianka!", 1, BLACK)
+    text = font.render("Niespodzianka!", 1, sd.BLACK)
     for boss in bosses:
-        pygame.draw.rect(screen, WHITE, (boss.position.x - 80, boss.position.y - 15, 80, 15))
+        pygame.draw.rect(screen, sd.WHITE, (boss.position.x - 80,
+                                            boss.position.y - 15, 80, 15))
         screen.blit(text, (boss.position.x - 78, boss.position.y - 13))
 
-def end_game(screen):
-    screen.fill(BLACK)
-    font = pygame.font.SysFont("ComicSans", 60)
-    text1 = font.render("Golgors are gone!", 1, BLACK)
-    text2 = font.render("Quit", 1, BLACK)
 
-    pygame.draw.rect(screen, WHITE, (250, 100, 360, 40))
+def end_game(screen):
+    screen.fill(sd.BLACK)
+    font = pygame.font.SysFont("ComicSans", 60)
+    text1 = font.render("Golgors are gone!", 1, sd.BLACK)
+    text2 = font.render("Quit", 1, sd.BLACK)
+
+    pygame.draw.rect(screen, sd.WHITE, (250, 100, 360, 40))
     screen.blit(text1, (250, 100))
 
-    pygame.draw.rect(screen, RED, (410, 300, 100, 40))
+    pygame.draw.rect(screen, sd.RED, (410, 300, 100, 40))
     screen.blit(text2, (410, 300))
     pygame.display.update()
-    # End logic
+
+    # Endgame logic
     while (True):
         for event in pygame.event.get():
             pos = pygame.mouse.get_pos()
@@ -106,44 +112,49 @@ def end_game(screen):
                     pygame.quit()
                     quit()
 
+
 def main():
     # Basics init.
     pygame.init()
 
     pygame.mixer.init()
 
-    baron_shoot_sound = pygame.mixer.Sound(SOUND_PATH + "baron_shoot.wav")
-    #if (not DEBUG):
-    #    pygame.mixer.music.play(-1)
-
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    screen = pygame.display.set_mode((sd.SCREEN_WIDTH, sd.SCREEN_HEIGHT))
 
     game_intro(screen)
-    if (not DEBUG):
-        pygame.mixer.music.load(SOUND_PATH + "theme.wav")
+    if (not sd.DEBUG):
+        # Load music theme here, because it is only used once here to play
+        # music.
+        try:
+            pygame.mixer.music.load(sd.SOUND_PATH + "theme.wav")
+        except IOError as er:
+            print("I/O error while loading music theme: " + er.strerror)
+        pygame.mixer.music.play(-1)
+
     # Images for level loader.
     level_objects_images = {
-        'platform': Models.PLATFORM_IMG,
-        'flag': Models.FOE_FLAG_IMG,
-        'foe': Models.FOE_L_IMG,
-        'tower': Models.TOWER_IMG,
-        'bridge': Models.BRIDGE_IMG,
-        'boss': Models.COMPANION_L
+        'platform': sd.ModelsAndSounds.PLATFORM_IMG,
+        'flag': sd.ModelsAndSounds.FOE_FLAG_IMG,
+        'foe': sd.ModelsAndSounds.FOE_L_IMG,
+        'tower': sd.ModelsAndSounds.TOWER_IMG,
+        'bridge': sd.ModelsAndSounds.BRIDGE_IMG,
+        'boss': sd.ModelsAndSounds.COMPANION_L
     }
 
     # Levels init.
     level_loader = LevelLoader(level_objects_images)
     level_list = [
-        level_loader.load_level(LEVELS_PATH + "intro_level"),
-        level_loader.load_level(LEVELS_PATH + "first_level"),
-        level_loader.load_level(LEVELS_PATH + "second_level"),
-        level_loader.load_level(LEVELS_PATH + "boss_level"),
+        level_loader.load_level(sd.LEVELS_PATH + "intro_level"),
+        level_loader.load_level(sd.LEVELS_PATH + "first_level"),
+        level_loader.load_level(sd.LEVELS_PATH + "second_level"),
+        level_loader.load_level(sd.LEVELS_PATH + "boss_level"),
     ]
 
     level_counter = 0
     level_change_indicator = False
     timer = 0
-    manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
+    manfred = we.Hero(level_list[level_counter],
+                      sd.ModelsAndSounds.BARON_R_IMG)
 
     # Main loop.
     pause = False
@@ -154,7 +165,8 @@ def main():
     while (True):
         if (level_change_indicator is True and timer == 0):
             level_counter += 1
-            manfred = we.Hero(level_list[level_counter], Models.BARON_R_IMG)
+            manfred = we.Hero(level_list[level_counter],
+                              sd.ModelsAndSounds.BARON_R_IMG)
             level_change_indicator = False
         if (timer > 0):
             timer -= 1
@@ -171,47 +183,47 @@ def main():
                 if (not pause):
                     # Movement and action keys
                     if (event.key == pygame.K_RIGHT):
-                        ax = HORIZONTAL_ACCELERATION
+                        ax = sd.HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_LEFT):
-                        ax = -HORIZONTAL_ACCELERATION
+                        ax = -sd.HORIZONTAL_ACCELERATION
                     if (event.key == pygame.K_UP):
                         if (manfred.squat):
                             manfred.squat = not manfred.squat
                         else:
-                            ay = -JUMP_ACCELERATION
+                            ay = -sd.JUMP_ACCELERATION
                     if (event.key == pygame.K_DOWN and not manfred.jumping):
                         if (manfred.squat):
                             manfred.dig()
                         manfred.squat = not manfred.squat
                     if (event.key == pygame.K_SPACE and not manfred.squat):
-                        if (not DEBUG):
-                            baron_shoot_sound.play()
+                        if (not sd.DEBUG):
+                            sd.ModelsAndSounds.BARON_SHOOT_SOUND.play()
                         manfred.shoot()
 
                     # Functional keys
                     if (event.key == pygame.K_0):
                         manfred.die()
-                    if (DEBUG and event.key == pygame.K_k):
+                    if (sd.DEBUG and event.key == pygame.K_k):
                         level_change_indicator = True
                 # Actions independent on pause
                 if (event.key == pygame.K_ESCAPE):
                     pygame.quit()
                     quit()
-                if (DEBUG and event.key == pygame.K_p):
+                if (sd.DEBUG and event.key == pygame.K_p):
                     pause = not pause
 
-        if (DEBUG and pause):
+        if (sd.DEBUG and pause):
             text = pygame.font.Font(None, 60).render("Pause", True,
-                                                     LIGHT_GREEN)
+                                                     sd.LIGHT_GREEN)
             text_rect = text.get_rect()
-            text_x = SCREEN_WIDTH / 2 - text_rect.width / 2
-            text_y = SCREEN_HEIGHT / 2 - text_rect.height / 2
+            text_x = sd.SCREEN_WIDTH / 2 - text_rect.width / 2
+            text_y = sd.SCREEN_HEIGHT / 2 - text_rect.height / 2
             screen.blit(text, [text_x, text_y])
             pygame.display.set_caption("Pause")
             pygame.display.flip()
             continue
 
-        screen.fill(BLACK)
+        screen.fill(sd.BLACK)
 
         # Apply motions logic.
         if (manfred.squat):
@@ -227,7 +239,7 @@ def main():
         level_list[level_counter].bosses.update()
 
         # Make screen following the hero if his velocity is significant.
-        if (manfred.rect.centerx > 0.5 * SCREEN_WIDTH and
+        if (manfred.rect.centerx > 0.5 * sd.SCREEN_WIDTH and
                 hero_displacement.x > 0):
             level_list[level_counter].follow_hero(-hero_displacement.x)
 
@@ -237,20 +249,21 @@ def main():
                                                      False)
         for flag in flags_in_touch:
             if (not flag.captured):
-                flag.image = Models.BARON_FLAG_IMG
+                flag.image = sd.ModelsAndSounds.BARON_FLAG_IMG
                 flag.captured = True
                 level_change_indicator = True
-                timer = IMMORTALITY_TIME
+                timer = sd.IMMORTALITY_TIME
 
         level_list[level_counter].shoot_towers()
         level_list[level_counter].move_bullets()
         level_list[level_counter].move_foes()
         level_list[level_counter].move_boss()
+        level_list[level_counter].update_bridges_statuses()
 
         if (manfred.rect.x != old_position.x and
                 manfred.rect.y == old_position.y and
                 manfred.immortality_timer == 0):
-            manfred.image = models_dict[
+            manfred.image = ani.MovingAnimations.BARON_MOVING_ANIMATION[
                 (manfred.direction, manfred.current_animation_model)]
             manfred.next_animation_model()
         else:
@@ -258,47 +271,48 @@ def main():
             if (manfred.direction is bs.Direction.RIGHT):
 
                 if (manfred.squat is True):
-                    manfred.image = Models.BARON_R_SQUAT_IMG
+                    manfred.image = sd.ModelsAndSounds.BARON_R_SQUAT_IMG
 
                 elif (manfred.jumping):
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_R_JUMPING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_JUMPING_IMG
                     else:
-                        manfred.image = Models.BARON_R_DAM_JUMPING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_DAM_JUMPING_IMG  # noqa
 
-                elif (1 < manfred.velocity.x < HORIZONTAL_ACCELERATION * 4):
+                elif (1 < manfred.velocity.x < sd.HORIZONTAL_ACCELERATION * 4):
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_R_BRAKING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_BRAKING_IMG
                     else:
-                        manfred.image = Models.BARON_R_DAM_BRAKING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_DAM_BRAKING_IMG  # noqa
 
                 else:
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_R_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_IMG
                     else:
-                        manfred.image = Models.BARON_R_DAM_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_R_DAM_IMG
 
             elif (manfred.direction is bs.Direction.LEFT):
 
                 if (manfred.squat is True):
-                    manfred.image = Models.BARON_L_SQUAT_IMG
+                    manfred.image = sd.ModelsAndSounds.BARON_L_SQUAT_IMG
 
                 elif (manfred.jumping):
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_L_JUMPING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_JUMPING_IMG
                     else:
-                        manfred.image = Models.BARON_L_DAM_JUMPING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_DAM_JUMPING_IMG  # noqa
 
-                elif (-1 > manfred.velocity.x > -HORIZONTAL_ACCELERATION * 4):
+                elif (
+                        -1 > manfred.velocity.x > -sd.HORIZONTAL_ACCELERATION * 4):  # noqa
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_L_BRAKING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_BRAKING_IMG
                     else:
-                        manfred.image = Models.BARON_L_DAM_BRAKING_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_DAM_BRAKING_IMG  # noqa
                 else:
                     if (manfred.immortality_timer == 0):
-                        manfred.image = Models.BARON_L_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_IMG
                     else:
-                        manfred.image = Models.BARON_L_DAM_IMG
+                        manfred.image = sd.ModelsAndSounds.BARON_L_DAM_IMG
 
         # Draw things.
         level_list[level_counter].all_platforms.draw(screen)
@@ -313,7 +327,7 @@ def main():
             intro_level(screen, intro_timer, manfred)
             intro_timer += 1
 
-        elif(level_counter == 3 and end_timer < 100):
+        elif (level_counter == 3 and end_timer < 100):
             end_level(screen, level_list[level_counter].bosses)
             end_timer += 1
         if level_list[level_counter].end_game:
@@ -329,14 +343,15 @@ def main():
         # Draw hp.
         hero_health = manfred.health
         while (hero_health > 0):
-            screen.blit(Models.HEART_IMG, (hero_health * 45, 40))
+            screen.blit(sd.ModelsAndSounds.HEART_IMG, (hero_health * 45, 40))
             hero_health -= 1
 
-        if (DEBUG):
+        if (sd.DEBUG):
             pygame.sprite.Group([manfred.ground_detector]).draw(screen)
 
         pygame.display.flip()
-        clock.tick(FPS)
+        clock.tick(sd.FPS)
+
 
 if (__name__ == "__main__"):
     main()

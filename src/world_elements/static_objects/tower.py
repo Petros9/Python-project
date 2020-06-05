@@ -1,5 +1,5 @@
-from settings import *
-from static_object import StaticObject
+from settings_and_data.settings import *
+from world_elements.static_objects.static_object import StaticObject
 
 
 class Tower(StaticObject):
